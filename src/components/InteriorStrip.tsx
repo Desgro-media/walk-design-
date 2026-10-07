@@ -1,0 +1,142 @@
+"use client";
+
+import React, { useRef } from "react";
+import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
+
+const interiorDetails = [
+  {
+    id: "detail-01",
+    titleEn: "MONOLITHIC HEARTH & RAW OAK",
+    titleEs: "HOGAR MONOLÍTICO & ROBLE CRUDO",
+    subEn: "Lusail Villa • Floor-to-ceiling brushed timber",
+    subEs: "Villa Lusail • Madera cepillada de suelo a techo",
+    image: "/images/interiors/interior-01-fireplace.jpg",
+  },
+  {
+    id: "detail-02",
+    titleEn: "FLUTED MARBLE ISLAND & BRONZE",
+    titleEs: "ISLA DE MÁRMOL ESTRIADO & BRONCE",
+    subEn: "Casa Travertino • Navona stone with integrated brass",
+    subEs: "Casa Travertino • Piedra Navona con latón integrado",
+    image: "/images/interiors/interior-02-kitchen-island.jpg",
+  },
+  {
+    id: "detail-03",
+    titleEn: "FLOATING CANTILEVERED STAIR",
+    titleEs: "ESCALERA VOLADA EN MICROCEMENTO",
+    subEn: "Atelier Al Waab • Monolithic concrete with continuous cove",
+    subEs: "Atelier Al Waab • Hormigón visto con iluminación fajeada",
+    image: "/images/interiors/interior-03-staircase.jpg",
+  },
+  {
+    id: "detail-04",
+    titleEn: "PIVOT APERTURE & COURTYARD LIGHT",
+    titleEs: "APERTURA PIVOTANTE & LUZ DE PATIO",
+    subEn: "Pavilion Duhail • Slim bronzed steel profile",
+    subEs: "Pabellón Duhail • Perfilería esbelta en acero bronceado",
+    image: "/images/interiors/interior-04-courtyard-pivot.jpg",
+  },
+  {
+    id: "detail-05",
+    titleEn: "HONED STONE BASIN & CONCEALED SPOUT",
+    titleEs: "LAVABO EN PIEDRA APOMAZADA & CAÑO OCULTO",
+    subEn: "Desert Sanctuary • Custom sculpted stone block",
+    subEs: "Santuario del Desierto • Bloque de piedra esculpido a mano",
+    image: "/images/interiors/interior-05-bathroom-niche.jpg",
+  },
+];
+
+export function InteriorStrip() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { language, t } = useLanguage();
+
+  const scrollByAmount = (direction: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+    const amount = direction === "left" ? -450 : 450;
+    scrollContainerRef.current.scrollBy({ left: amount, behavior: "smooth" });
+  };
+
+  return (
+    <section
+      id="interior-strip"
+      className="relative w-full bg-[#EBE6DF] text-[#1A1A1A] py-28 sm:py-36 md:py-40 overflow-hidden border-b border-[#1A1A1A]/8"
+    >
+      <div className="px-6 sm:px-10 md:px-14 lg:px-20 mb-12 sm:mb-16 max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <p className="text-[11px] tracking-[0.24em] uppercase font-light text-[#736E67] mb-3">
+            03 / {t.interiorStrip.heading}
+          </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-[#1A1A1A]">
+            {language === "EN" ? "Tactile Craft & Atmosphere" : "Oficio Táctil y Atmósfera"}
+          </h2>
+          <p className="mt-3 text-[14px] font-light text-[#736E67] max-w-md">
+            {t.interiorStrip.subheading}
+          </p>
+        </div>
+
+        {/* Scroll Controls */}
+        <div className="flex items-center space-x-6 text-[11px] tracking-[0.18em] font-light uppercase">
+          <span className="hidden sm:inline text-[#736E67] text-[10.5px]">
+            {t.interiorStrip.dragHint}
+          </span>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => scrollByAmount("left")}
+              aria-label="Scroll left"
+              className="w-10 h-10 border border-[#1A1A1A]/20 flex items-center justify-center hover:bg-[#1A1A1A] hover:text-[#F4F1EC] transition-colors cursor-pointer"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => scrollByAmount("right")}
+              aria-label="Scroll right"
+              className="w-10 h-10 border border-[#1A1A1A]/20 flex items-center justify-center hover:bg-[#1A1A1A] hover:text-[#F4F1EC] transition-colors cursor-pointer"
+            >
+              →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Horizontal Strip Container */}
+      <div
+        ref={scrollContainerRef}
+        data-lenis-prevent
+        className="flex space-x-8 sm:space-x-12 overflow-x-auto px-6 sm:px-10 md:px-14 lg:px-20 pb-8 no-scrollbar scroll-smooth"
+        style={{ scrollbarWidth: "none" }}
+      >
+        {interiorDetails.map((detail, index) => (
+          <div
+            key={detail.id}
+            className="group flex-shrink-0 w-[300px] sm:w-[420px] md:w-[480px] flex flex-col select-none"
+          >
+            {/* Image Tile */}
+            <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#D8D2C7]">
+              <Image
+                src={detail.image}
+                alt={detail.titleEn}
+                fill
+                sizes="(max-width: 768px) 300px, 480px"
+                className="object-cover w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+              />
+              <div className="absolute top-4 left-4 text-[10px] tracking-[0.2em] font-light uppercase text-white/80 bg-black/30 backdrop-blur-sm px-2.5 py-1">
+                0{index + 1}
+              </div>
+            </div>
+
+            {/* Label */}
+            <div className="mt-5 border-t border-[#1A1A1A]/10 pt-3">
+              <h3 className="text-[12.5px] sm:text-[13px] font-light tracking-[0.16em] uppercase text-[#1A1A1A] group-hover:opacity-60 transition-opacity">
+                {language === "EN" ? detail.titleEn : detail.titleEs}
+              </h3>
+              <p className="mt-1 text-[11px] font-light tracking-[0.14em] text-[#736E67]">
+                {language === "EN" ? detail.subEn : detail.subEs}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
