@@ -66,18 +66,24 @@ export function SiteLoader() {
       gsap.set(stepRefs.current, { opacity: 0 });
       gsap.set(stageRef.current, { transformPerspective: 1200, rotateY: -32, rotateX: 12, scale: 0.92 });
 
+      const STEP_GAP = 0.45; // seconds between steps
+      const LAST_LAND = (STEPS.length - 1) * STEP_GAP + 0.3;
+
       tl = gsap
         .timeline({ onComplete: done })
         // 1. frame draws on
         .to(frameRef.current, { strokeDashoffset: 0, duration: 2, ease: "sine.inOut" })
         // 2. door swings open from the frame
         .to(panelRef.current, { scaleX: 1, opacity: 1, duration: 1.5, ease: "sine.inOut" }, "-=0.3")
-        // 3. footprints walk in through the opening, one step at a time
-        .to(stepRefs.current, { opacity: 0.8, duration: 0.7, ease: "sine.inOut", stagger: 0.3 }, "-=0.9")
-        // 4. name appears once the last step lands
-        .to(nameRef.current, { opacity: 1, y: 0, duration: 1.1, ease: "sine.out" }, "-=0.2")
-        // 5. hold, then reveal the page
-        .to(overlayRef.current, { opacity: 0, duration: 1.1, ease: "sine.inOut" }, "+=0.8")
+        .addLabel("walk", "-=0.9")
+        // 3. footprints land one at a time at full strength...
+        .to(stepRefs.current, { opacity: 1, duration: 0.3, ease: "power2.out", stagger: STEP_GAP }, "walk")
+        // 4. ...and each one erases itself a moment after it lands
+        .to(stepRefs.current, { opacity: 0, duration: 1, ease: "sine.inOut", stagger: STEP_GAP }, `walk+=${1.1}`)
+        // 5. name appears once the last step has landed
+        .to(nameRef.current, { opacity: 1, y: 0, duration: 1.1, ease: "sine.out" }, `walk+=${LAST_LAND}`)
+        // 6. hold, then reveal the page
+        .to(overlayRef.current, { opacity: 0, duration: 1.1, ease: "sine.inOut" }, `walk+=${LAST_LAND + 2.4}`)
         // 3D camera sweep runs alongside everything: starts angled, settles face-on
         .to(stageRef.current, { rotateY: 0, rotateX: 0, scale: 1, duration: 6, ease: "sine.inOut" }, 0);
     };
@@ -104,7 +110,7 @@ export function SiteLoader() {
       aria-hidden="true"
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#F4F1EC]"
     >
-      <div ref={stageRef} style={{ transformStyle: "preserve-3d", willChange: "transform" }}>
+      <div ref={stageRef} style={{ willChange: "transform", backfaceVisibility: "hidden" }}>
       <svg viewBox="-60 80 880 740" className="h-64 sm:h-80 w-auto" fill="none">
         <path
           ref={frameRef}

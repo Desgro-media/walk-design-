@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { services, process } from "@/data/studio";
 import { useLanguage } from "@/context/LanguageContext";
-import { Tilt } from "@/components/Tilt";
+import { ImageRail } from "@/components/ImageRail";
 import { Reveal3D } from "@/components/Reveal3D";
 
 export function ServicesSection() {
@@ -50,21 +49,10 @@ export function ServicesSection() {
           ))}
         </div>
 
-        {/* Active service */}
-        <Tilt max={3} className="relative mt-10 w-full aspect-[4/3] sm:aspect-[16/8] overflow-hidden bg-[#E8E5E0]" key={`img-${active.id}`}>
-          <Image
-            src={active.image}
-            alt={active.imageAlt}
-            fill
-            sizes="(max-width: 1280px) 100vw, 1280px"
-            className="object-cover animate-[fadeIn_0.8s_ease-out]"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent pointer-events-none" />
-          <span className="absolute left-5 bottom-4 sm:left-8 sm:bottom-6 text-[12px] sm:text-[13px] tracking-[0.24em] uppercase font-light text-white">
-            {active.title}
-          </span>
-        </Tilt>
+        {/* Active service: a row of images */}
+        <div className="mt-10" key={`rail-${active.id}`}>
+          <ImageRail images={active.images} />
+        </div>
 
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16" key={active.id}>
           <div className="lg:col-span-5">

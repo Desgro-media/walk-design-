@@ -8,15 +8,21 @@ export interface Service {
   extra: string;
   deliverables: string;
   closing?: { title: string; text: string };
-  image: string;
-  imageAlt: string;
+  images: { src: string; alt: string }[];
 }
 
 export const services: Service[] = [
   {
     id: "architecture",
-    image: "/images/works/arch-lusail-exterior.webp",
-    imageAlt: "Architecture — a monolithic stone residence in warm evening light",
+    images: [
+      { src: "/images/works/arch-lusail-exterior.webp", alt: "Travertine residence at golden hour" },
+      { src: "/images/works/arch-alwaab-facade.webp", alt: "White villa facade with palms and olive trees" },
+      { src: "/images/hero/hero-01-vestibule.jpg", alt: "Timber and glass house under a eucalyptus" },
+      { src: "/images/hero/hero-03-travertine-dining.jpg", alt: "Pavilion with slatted timber screen at dusk" },
+      { src: "/images/interiors/interior-02-kitchen-island.jpg", alt: "Dark cantilevered volume with lit windows" },
+      { src: "/images/hero/hero-07-stone-bath.jpg", alt: "Timber and black steel house with entrance court" },
+      { src: "/images/hero/hero-05-courtyard-olive.jpg", alt: "Black box volume with warm glazing" },
+    ],
     title: "Architecture",
     heading: "Spaces planned for the way you live",
     intro:
@@ -45,8 +51,18 @@ export const services: Service[] = [
   },
   {
     id: "interior",
-    image: "/images/works/villa-lusail-living.webp",
-    imageAlt: "Interior design — a living room with travertine, oak and linen",
+    images: [
+      { src: "/images/works/villa-lusail-living.webp", alt: "Living room in travertine, oak and linen" },
+      { src: "/images/works/villa-lusail-dining.webp", alt: "Lounge with linear fireplace" },
+      { src: "/images/works/villa-alkhor-lounge.webp", alt: "Bedroom with upholstered headboard" },
+      { src: "/images/works/villa-duhail-suite.webp", alt: "Suite with timber wall panelling" },
+      { src: "/images/works/villa-uae-hall.webp", alt: "Formal reception room" },
+      { src: "/images/hero/hero-02-oak-lounge.jpg", alt: "Open lounge with oak and linen" },
+      { src: "/images/hero/hero-04-microcement-gallery.jpg", alt: "Living area with timber feature wall" },
+      { src: "/images/interiors/interior-01-fireplace.jpg", alt: "Living room with framed gallery wall" },
+      { src: "/images/interiors/interior-03-staircase.jpg", alt: "Dining area with floating stair" },
+      { src: "/images/interiors/interior-04-courtyard-pivot.jpg", alt: "Kitchen island with timber joinery" },
+    ],
     title: "Interior Design",
     heading: "Interiors with character, comfort and purpose",
     intro:
@@ -72,8 +88,14 @@ export const services: Service[] = [
   },
   {
     id: "landscape",
-    image: "/images/works/landscape-courtyard.webp",
-    imageAlt: "Landscape design — a limestone courtyard with planting",
+    images: [
+      { src: "/images/works/landscape-courtyard.webp", alt: "Formal garden courtyard with fountain" },
+      { src: "/images/works/arch-alwaab-facade.webp", alt: "Palms and olive trees at a villa entrance" },
+      { src: "/images/works/arch-lusail-exterior.webp", alt: "Planted frontage with travertine paving" },
+      { src: "/images/hero/hero-01-vestibule.jpg", alt: "Lawn and mature tree beside a house" },
+      { src: "/images/hero/hero-07-stone-bath.jpg", alt: "Gravel court with planting" },
+      { src: "/images/hero/hero-05-courtyard-olive.jpg", alt: "Courtyard planting against a dark facade" },
+    ],
     title: "Landscape Design",
     heading: "Outdoor spaces that belong to the whole design",
     intro:
@@ -110,6 +132,7 @@ export const process = [
 export const founders = [
   {
     name: "Ar. Mohamed Ramshad",
+    photo: "/images/founders/mohamed-ramshad.jpg",
     role: "Co-Founder | CEO",
     creds: "B.Arch, MMUP, Intl. Assoc. AIA, RIBA, COA",
     bio: [
@@ -121,6 +144,7 @@ export const founders = [
   },
   {
     name: "Ar. Rajeena",
+    photo: "/images/founders/rajeena.jpg",
     role: "Co-Founder | Design Director",
     creds: "B.Arch, MMUP, Intl. Assoc. AIA, RIBA, COA",
     bio: [

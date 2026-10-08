@@ -91,51 +91,38 @@ export function HeroSequence() {
         gsap.set(slides[i], { opacity: 0, zIndex: i + 1 });
       }
 
-      // Smooth step-by-step crossfade walkthrough
+      // Each photo holds for most of its turn, then crossfades quickly into the next one
+      // (long crossfades made two photos overlap, like a double exposure, at almost every scroll position)
+      const SLOT = 2; // timeline units per photo
+      const HOLD = 1.5; // still time before the next crossfade starts
+      const FADE = 0.5; // crossfade length
+
       slides.forEach((slide, i) => {
         if (i === 0) return;
 
-        // Start time in timeline units
-        const timeSlot = (i - 1) * 1.5;
+        const timeSlot = (i - 1) * SLOT + HOLD;
 
-        // Crossfade in next slide over previous with gentle power1 easing
-        tl.to(
-          slide,
-          {
-            opacity: 1,
-            ease: "power1.inOut",
-            duration: 1.2,
-          },
-          timeSlot
-        );
+        // Next photo fades in over the previous one
+        tl.to(slide, { opacity: 1, ease: "power1.inOut", duration: FADE }, timeSlot);
 
         // Subtle slow cinematic camera push (1.04 to 1.0)
         if (innerImages[i]) {
           tl.fromTo(
             innerImages[i],
             { scale: 1.04 },
-            {
-              scale: 1.0,
-              ease: "power1.out",
-              duration: 1.5,
-            },
+            { scale: 1.0, ease: "power1.out", duration: SLOT },
             timeSlot
           );
         }
 
-        // Fade out previous slide smoothly after next is established
+        // Once the new photo is fully opaque, drop the one underneath (saves compositing work)
         if (slides[i - 1]) {
-          tl.to(
-            slides[i - 1],
-            {
-              opacity: 0,
-              ease: "power1.inOut",
-              duration: 0.6,
-            },
-            timeSlot + 0.9
-          );
+          tl.to(slides[i - 1], { opacity: 0, duration: 0.05 }, timeSlot + FADE);
         }
       });
+
+      // Let the last photo hold before the pinned section ends
+      tl.to({}, { duration: HOLD }, (count - 2) * SLOT + HOLD + FADE);
     }, containerRef);
 
     return () => ctx.revert();

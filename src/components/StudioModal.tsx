@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { approach, founders, process } from "@/data/studio";
 
@@ -120,7 +121,16 @@ export function StudioModal() {
                 </span>
                 <h3 className="text-xl font-light tracking-tight text-[#1A1A1A] mt-1">{f.name}</h3>
                 <p className="text-[11px] tracking-[0.14em] uppercase text-[#A9876B] mt-0.5">{f.creds}</p>
-                <div className="mt-3 space-y-3 text-[14px] font-light leading-relaxed text-[#1A1A1A]/90">
+                <div className="relative mt-5 w-48 sm:w-56 aspect-[4/5] overflow-hidden bg-[#E8E5E0]">
+                  <Image
+                    src={f.photo}
+                    alt={f.name}
+                    fill
+                    sizes="224px"
+                    className="object-cover object-top [filter:grayscale(1)]"
+                  />
+                </div>
+                <div className="mt-5 space-y-3 text-[14px] font-light leading-relaxed text-[#1A1A1A]/90">
                   {f.bio.map((para, i) => (
                     <p key={i}>{para}</p>
                   ))}

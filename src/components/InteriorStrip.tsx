@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -50,6 +50,23 @@ const interiorDetails = [
 export function InteriorStrip() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { language, t } = useLanguage();
+  const [isDragging, setIsDragging] = useState(false);
+  const drag = useRef({ startX: 0, startLeft: 0, moved: false });
+
+  // Mouse drag-to-scroll (touch already scrolls natively)
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse" || !scrollContainerRef.current) return;
+    drag.current = { startX: e.clientX, startLeft: scrollContainerRef.current.scrollLeft, moved: false };
+    setIsDragging(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    const dx = e.clientX - drag.current.startX;
+    if (Math.abs(dx) > 3) drag.current.moved = true;
+    scrollContainerRef.current.scrollLeft = drag.current.startLeft - dx;
+  };
+  const endDrag = () => setIsDragging(false);
 
   const scrollByAmount = (direction: "left" | "right") => {
     if (!scrollContainerRef.current) return;
@@ -102,8 +119,15 @@ export function InteriorStrip() {
       {/* Horizontal Strip Container */}
       <div
         ref={scrollContainerRef}
-        data-lenis-prevent
-        className="flex space-x-8 sm:space-x-12 overflow-x-auto px-6 sm:px-10 md:px-14 lg:px-20 pb-8 no-scrollbar scroll-smooth"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        // No data-lenis-prevent here: letting the page's smooth scroll handle the wheel keeps vertical
+        // scrolling consistent over the gallery. Horizontal gestures still scroll the strip natively.
+        className={`flex space-x-8 sm:space-x-12 overflow-x-auto overscroll-x-contain px-6 sm:px-10 md:px-14 lg:px-20 pb-8 no-scrollbar ${
+          isDragging ? "cursor-grabbing" : "cursor-grab scroll-smooth"
+        }`}
         style={{ scrollbarWidth: "none" }}
       >
         {interiorDetails.map((detail, index) => (
