@@ -49,7 +49,7 @@ export function ImageRail({ images }: ImageRailProps) {
               fill
               draggable={false}
               sizes="(max-width: 640px) 78vw, (max-width: 1024px) 46vw, 460px"
-              className="object-cover [filter:grayscale(1)] transition-[filter,transform] duration-300 ease-linear group-hover:[filter:grayscale(0)] group-hover:scale-[1.02]"
+              className="object-cover [filter:grayscale(1)] [@media(hover:none)]:[filter:grayscale(0)] transition-[filter,transform] duration-300 ease-linear group-hover:[filter:grayscale(0)] group-hover:scale-[1.02]"
             />
           </div>
         ))}

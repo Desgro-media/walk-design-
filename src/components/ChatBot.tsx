@@ -74,12 +74,12 @@ export function ChatBot() {
   }
 
   return (
-    <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 [font-family:var(--font-work-sans),sans-serif]">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 [font-family:var(--font-work-sans),sans-serif]">
       {open && (
         <div
           role="dialog"
           aria-label="Chat with Walk In Design"
-          className="mb-3 flex w-[calc(100vw-2.5rem)] sm:w-[22rem] h-[min(32rem,calc(100svh-7rem))] flex-col overflow-hidden bg-[#F4F1EC] text-[#1A1A1A] shadow-2xl border border-[#1A1A1A]/10"
+          className="mb-3 flex w-[calc(100vw-2rem)] sm:w-[22rem] h-[min(32rem,calc(100svh-6.5rem))] flex-col overflow-hidden bg-[#F4F1EC] text-[#1A1A1A] shadow-2xl border border-[#1A1A1A]/10"
         >
           <div className="flex items-center justify-between bg-[#141312] px-4 py-3 text-[#F4F1EC]">
             <div>
@@ -195,13 +195,13 @@ export function ChatBot() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
-        className="ml-auto flex items-center gap-3 rounded-full bg-[#F4F1EC] py-2 pl-2 pr-5 text-[#141312] shadow-[0_8px_30px_rgba(0,0,0,0.35)] ring-1 ring-black/10 hover:bg-white hover:shadow-[0_10px_34px_rgba(0,0,0,0.45)] transition-all cursor-pointer"
+        className="ml-auto flex items-center gap-3 rounded-full bg-[#F4F1EC] p-1.5 sm:py-2 sm:pl-2 sm:pr-5 text-[#141312] shadow-[0_8px_30px_rgba(0,0,0,0.35)] ring-1 ring-black/10 hover:bg-white hover:shadow-[0_10px_34px_rgba(0,0,0,0.45)] transition-all cursor-pointer"
       >
         <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[#4A543B] text-white">
           {!open && <span className="absolute inset-0 rounded-full bg-[#4A543B]/50 animate-ping [animation-duration:2.6s]" aria-hidden="true" />}
           <span className="relative">{open ? <X size={18} /> : <MessageCircle size={18} />}</span>
         </span>
-        <span className="text-[12px] tracking-[0.18em] uppercase font-normal">{open ? "Close" : "Chat with us"}</span>
+        <span className="hidden sm:inline text-[12px] tracking-[0.18em] uppercase font-normal">{open ? "Close" : "Chat with us"}</span>
       </button>
     </div>
   );

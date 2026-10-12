@@ -161,11 +161,18 @@ export function Header() {
           </nav>
         </div>
 
-        <div className="border-t border-[#1A1A1A]/10 pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 text-[11px] tracking-[0.18em] font-light text-[#736E67]">
-          <div>
-            <p>QATAR & INDIA</p>
-            <p className="mt-1">+974 5175 3798</p>
-            <p className="mt-1">+974 5175 3799</p>
+        <div className="border-t border-[#1A1A1A]/10 pt-6 pb-16 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 text-[11px] tracking-[0.18em] font-light text-[#736E67]">
+          <div className="flex flex-wrap gap-x-10 gap-y-4">
+            <div>
+              <p>QATAR · WEST BAY</p>
+              <p className="mt-1">+974 5175 3798</p>
+              <p className="mt-1">+974 5175 3799</p>
+            </div>
+            <div>
+              <p>INDIA · TIRUR, MALAPPURAM</p>
+              <p className="mt-1">+91 9747397043</p>
+              <p className="mt-1">+91 8330095919</p>
+            </div>
           </div>
         </div>
       </div>

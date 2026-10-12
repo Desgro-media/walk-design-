@@ -115,7 +115,7 @@ export function PortfolioGrid() {
                       alt={p.title}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1152px) 33vw, 380px"
-                      className={`object-cover [filter:grayscale(1)] transition-[filter] duration-300 ease-linear ${
+                      className={`object-cover [filter:grayscale(1)] [@media(hover:none)]:[filter:grayscale(0)] transition-[filter] duration-300 ease-linear ${
                         p.comingSoon ? "" : "group-hover:[filter:grayscale(0)]"
                       }`}
                     />
@@ -164,7 +164,7 @@ export function PortfolioGrid() {
                       alt={p.title}
                       fill
                       sizes="80px"
-                      className={`object-cover [filter:grayscale(1)] transition-[filter] duration-300 ease-linear ${
+                      className={`object-cover [filter:grayscale(1)] [@media(hover:none)]:[filter:grayscale(0)] transition-[filter] duration-300 ease-linear ${
                         p.comingSoon ? "" : "group-hover:[filter:grayscale(0)]"
                       }`}
                     />

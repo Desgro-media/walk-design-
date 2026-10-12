@@ -17,7 +17,7 @@ export function Footer() {
   return (
     <footer
       id="contact"
-      className="relative w-full bg-white text-[#141312] pt-12 sm:pt-16 pb-8 px-6 sm:px-10 md:px-14 lg:px-20 select-none"
+      className="relative w-full bg-white text-[#141312] pt-12 sm:pt-16 pb-24 sm:pb-8 px-6 sm:px-10 md:px-14 lg:px-20 select-none"
     >
       <div className="max-w-7xl mx-auto">
         {/* Top: Large Quiet Commission Banner */}

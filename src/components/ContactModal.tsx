@@ -218,9 +218,12 @@ export function ContactModal() {
         </div>
 
         {/* Bottom studio credentials */}
-        <div className="mt-12 pt-6 border-t border-[#1A1A1A]/10 text-[10.5px] tracking-[0.18em] uppercase font-light text-[#736E67] flex justify-between">
+        <div className="mt-12 pt-6 border-t border-[#1A1A1A]/10 text-[10.5px] tracking-[0.18em] uppercase font-light text-[#736E67] flex flex-col sm:flex-row sm:justify-between gap-2">
           <span>QATAR & INDIA</span>
-          <span>+974 5175 3798 • +974 5175 3799</span>
+          <span className="flex flex-col gap-1 sm:text-right">
+            <span>Qatar: +974 5175 3798 • +974 5175 3799</span>
+            <span>India: +91 9747397043 • +91 8330095919</span>
+          </span>
         </div>
       </div>
     </div>

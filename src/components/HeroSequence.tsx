@@ -134,13 +134,23 @@ export function HeroSequence() {
               }}
               className="relative w-full h-full will-change-transform"
             >
+              {/* Portrait screens: a soft blurred copy fills the screen behind the whole, uncropped photo */}
+              <Image
+                src={image.src}
+                alt=""
+                aria-hidden="true"
+                fill
+                sizes="25vw"
+                quality={75}
+                className="hidden [@media(orientation:portrait)]:block object-cover scale-125 blur-2xl brightness-75"
+              />
               <Image
                 src={image.src}
                 alt={image.alt}
                 fill
                 priority={index < 2}
                 sizes="100vw"
-                className="object-cover w-full h-full"
+                className="object-cover [@media(orientation:portrait)]:object-contain"
                 quality={90}
               />
               {/* Warm architectural atmospheric grading overlay */}
@@ -152,7 +162,7 @@ export function HeroSequence() {
         ))}
 
         {/* Minimal Quiet Room Indicator & Scroll Hint — pinned at bottom corners, pure & non-intrusive */}
-        <div className="absolute bottom-8 sm:bottom-10 left-6 sm:left-10 md:left-14 right-6 sm:right-52 z-20 flex justify-between items-end pointer-events-none text-white/90 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
+        <div className="absolute bottom-8 sm:bottom-10 left-6 sm:left-10 md:left-14 right-20 sm:right-52 z-20 flex justify-between items-end pointer-events-none text-white/90 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
           {/* Left: Active Room Progression */}
           <div className="flex flex-col space-y-1">
             <span className="text-[10px] sm:text-[11px] tracking-[0.24em] font-light uppercase transition-all duration-500">
