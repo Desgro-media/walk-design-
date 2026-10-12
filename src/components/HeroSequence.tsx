@@ -101,6 +101,24 @@ export function HeroSequence() {
         }
       });
 
+      // Portrait screens crop the wide photos, so slowly pan each one sideways while it is on screen
+      const mm = gsap.matchMedia();
+      mm.add("(orientation: portrait)", () => {
+        slides.forEach((slide, i) => {
+          const img = slide.querySelector<HTMLImageElement>("img");
+          if (!img) return;
+          const [from, to] = i % 2 === 0 ? [8, 92] : [92, 8];
+          const start = i === 0 ? 0 : (i - 1) * SLOT + HOLD;
+          gsap.set(img, { objectPosition: `${from}% 50%` });
+          tl.fromTo(
+            img,
+            { objectPosition: `${from}% 50%` },
+            { objectPosition: `${to}% 50%`, ease: "none", duration: SLOT + FADE },
+            start
+          );
+        });
+      });
+
       // Let the last photo hold before the pinned section ends
       tl.to({}, { duration: HOLD }, (count - 2) * SLOT + HOLD + FADE);
     }, containerRef);
@@ -134,23 +152,13 @@ export function HeroSequence() {
               }}
               className="relative w-full h-full will-change-transform"
             >
-              {/* Portrait screens: a soft blurred copy fills the screen behind the whole, uncropped photo */}
-              <Image
-                src={image.src}
-                alt=""
-                aria-hidden="true"
-                fill
-                sizes="25vw"
-                quality={75}
-                className="hidden [@media(orientation:portrait)]:block object-cover scale-125 blur-2xl brightness-75"
-              />
               <Image
                 src={image.src}
                 alt={image.alt}
                 fill
                 priority={index < 2}
                 sizes="100vw"
-                className="object-cover [@media(orientation:portrait)]:object-contain"
+                className="object-cover"
                 quality={90}
               />
               {/* Warm architectural atmospheric grading overlay */}
