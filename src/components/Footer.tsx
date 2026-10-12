@@ -43,7 +43,7 @@ export function Footer() {
         </div>
 
         {/* 4 Column Info Grid — thin uppercase type as requested */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 py-10 text-[11.5px] tracking-[0.16em] uppercase font-light leading-relaxed text-[#4A4A4A]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto] gap-8 sm:gap-10 py-10 text-[11.5px] tracking-[0.16em] uppercase font-light leading-relaxed text-[#4A4A4A]">
           {/* Col 1: Studio */}
           <div className="flex flex-col space-y-3">
             <span className="text-[#141312] font-normal tracking-[0.2em] mb-1">
@@ -88,7 +88,7 @@ export function Footer() {
             <span className="text-[#141312] font-normal tracking-[0.2em] mb-1">
               {t.footer.hoursTitle}
             </span>
-            <p>{t.footer.hours}</p>
+            <p className="lg:whitespace-nowrap">{t.footer.hours}</p>
           </div>
         </div>
 
