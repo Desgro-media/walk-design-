@@ -9,24 +9,26 @@ import { projectsData } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Real project photos, one per scroll step: [project id, which photo of its gallery]
-const HERO_PICKS: [string, number][] = [
-  ["architecture-01-lusail-qatar", 0],
-  ["interior-01-lusail-qatar", 0],
-  ["landscape-01-al-waab-qatar", 0],
-  ["architecture-06-al-waab-qatar", 0],
-  ["interior-07-al-kheesa-qatar", 0],
-  ["landscape-03-al-khor-qatar", 0],
-  ["interior-02-al-rayyan-qatar", 0],
+// Real project photos, one per scroll step: [project id, which photo of its gallery, horizontal focus %]
+// The focus keeps the main subject (entrance, fireplace, fountain, pool...) in view when a phone crops the photo
+const HERO_PICKS: [string, number, number][] = [
+  ["architecture-01-lusail-qatar", 0, 47],
+  ["interior-01-lusail-qatar", 0, 50],
+  ["landscape-01-al-waab-qatar", 0, 50],
+  ["architecture-06-al-waab-qatar", 0, 50],
+  ["interior-07-al-kheesa-qatar", 0, 50],
+  ["landscape-03-al-khor-qatar", 0, 50],
+  ["interior-02-al-rayyan-qatar", 0, 50],
 ];
 
-const heroImages = HERO_PICKS.map(([id, photo], i) => {
+const heroImages = HERO_PICKS.map(([id, photo, focus], i) => {
   const project = projectsData.find((p) => p.id === id);
   if (!project) throw new Error(`Hero project not found: ${id}`);
   const n = `${String(i + 1).padStart(2, "0")} / ${String(HERO_PICKS.length).padStart(2, "0")}`;
   const label = `${n} — ${project.category} · ${project.location}`.toUpperCase();
   return {
     src: project.gallery[photo].src,
+    focus,
     alt: `${project.title}, ${project.location}`,
     roomEn: label,
     roomEs: `${n} — ${project.categoryEs} · ${project.locationEs}`.toUpperCase(),
@@ -101,24 +103,6 @@ export function HeroSequence() {
         }
       });
 
-      // Portrait screens crop the wide photos, so slowly pan each one sideways while it is on screen
-      const mm = gsap.matchMedia();
-      mm.add("(orientation: portrait)", () => {
-        slides.forEach((slide, i) => {
-          const img = slide.querySelector<HTMLImageElement>("img");
-          if (!img) return;
-          const [from, to] = i % 2 === 0 ? [8, 92] : [92, 8];
-          const start = i === 0 ? 0 : (i - 1) * SLOT + HOLD;
-          gsap.set(img, { objectPosition: `${from}% 50%` });
-          tl.fromTo(
-            img,
-            { objectPosition: `${from}% 50%` },
-            { objectPosition: `${to}% 50%`, ease: "none", duration: SLOT + FADE },
-            start
-          );
-        });
-      });
-
       // Let the last photo hold before the pinned section ends
       tl.to({}, { duration: HOLD }, (count - 2) * SLOT + HOLD + FADE);
     }, containerRef);
@@ -159,6 +143,7 @@ export function HeroSequence() {
                 priority={index < 2}
                 sizes="100vw"
                 className="object-cover"
+                style={{ objectPosition: `${image.focus}% 50%` }}
                 quality={90}
               />
               {/* Warm architectural atmospheric grading overlay */}
