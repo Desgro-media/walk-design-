@@ -1,12 +1,17 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { approach, founders, process } from "@/data/studio";
 
 export function StudioModal() {
   const { isStudioModalOpen, setIsStudioModalOpen, language } = useLanguage();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const founderRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Which founder is being read in the panel; its photo is shown large in the left area (wide screens)
+  const [shownFounder, setShownFounder] = useState(0);
+  const [founderInView, setFounderInView] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -18,7 +23,29 @@ export function StudioModal() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [setIsStudioModalOpen]);
 
+  useEffect(() => {
+    if (!isStudioModalOpen) return;
+    const visible = new Set<number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const i = founderRefs.current.indexOf(entry.target as HTMLDivElement);
+          if (i < 0) return;
+          if (entry.isIntersecting) visible.add(i);
+          else visible.delete(i);
+        });
+        setFounderInView(visible.size > 0);
+        if (visible.size > 0) setShownFounder(Math.min(...visible));
+      },
+      { root: panelRef.current, rootMargin: "-25% 0px -35% 0px" }
+    );
+    founderRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, [isStudioModalOpen]);
+
   if (!isStudioModalOpen) return null;
+
+  const shown = founders[shownFounder];
 
   return (
     <div
@@ -27,7 +54,35 @@ export function StudioModal() {
       className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm transition-opacity duration-300"
       onClick={() => setIsStudioModalOpen(false)}
     >
+      {/* Large founder photo in the space left of the panel (wide screens only) */}
       <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-0 right-[48rem] hidden xl:flex items-center justify-center"
+      >
+        <div
+          className="transition-opacity duration-700 ease-out"
+          style={{ opacity: founderInView ? 1 : 0 }}
+        >
+          <figure key={shown.name} className="founder-reveal w-[min(26rem,34vw)] text-[#F4F1EC]">
+            <div className="relative aspect-[4/5] overflow-hidden bg-[#E8E5E0] shadow-2xl">
+              <Image
+                src={shown.photo}
+                alt=""
+                fill
+                sizes="416px"
+                className="founder-reveal-img object-cover object-top"
+              />
+            </div>
+            <figcaption className="mt-4 text-[11px] tracking-[0.22em] uppercase font-light">
+              {shown.name}
+              <span className="block mt-1 text-[#F4F1EC]/60">{shown.role}</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div
+        ref={panelRef}
         data-lenis-prevent
         className="relative w-full max-w-3xl h-full bg-[#F4F1EC] text-[#1A1A1A] overflow-y-auto p-8 sm:p-12 md:p-16 flex flex-col justify-between shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
         onClick={(e) => e.stopPropagation()}
@@ -114,20 +169,25 @@ export function StudioModal() {
             <span className="text-[10px] tracking-[0.22em] uppercase font-light text-[#736E67] block">
               {language === "EN" ? "MEET THE FOUNDERS" : "CONOZCA A LOS FUNDADORES"}
             </span>
-            {founders.map((f) => (
-              <div key={f.name}>
+            {founders.map((f, fi) => (
+              <div
+                key={f.name}
+                ref={(el) => {
+                  founderRefs.current[fi] = el;
+                }}
+              >
                 <span className="text-[10px] tracking-[0.22em] uppercase font-light text-[#736E67] block">
                   {f.role}
                 </span>
                 <h3 className="text-xl font-light tracking-tight text-[#1A1A1A] mt-1">{f.name}</h3>
                 <p className="text-[11px] tracking-[0.14em] uppercase text-[#A9876B] mt-0.5">{f.creds}</p>
-                <div className="relative mt-5 w-48 sm:w-56 aspect-[4/5] overflow-hidden bg-[#E8E5E0]">
+                <div className="relative mt-5 w-48 sm:w-56 xl:hidden aspect-[4/5] overflow-hidden bg-[#E8E5E0]">
                   <Image
                     src={f.photo}
                     alt={f.name}
                     fill
                     sizes="224px"
-                    className="object-cover object-top [filter:grayscale(1)]"
+                    className="object-cover object-top"
                   />
                 </div>
                 <div className="mt-5 space-y-3 text-[14px] font-light leading-relaxed text-[#1A1A1A]/90">

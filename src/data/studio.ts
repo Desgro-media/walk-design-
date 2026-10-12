@@ -132,7 +132,7 @@ export const process = [
 export const founders = [
   {
     name: "Ar. Mohamed Ramshad",
-    photo: "/images/founders/mohamed-ramshad.jpg",
+    photo: "/images/founders/mohamed-ramshad-new.jpg",
     role: "Co-Founder | CEO",
     creds: "B.Arch, MMUP, Intl. Assoc. AIA, RIBA, COA",
     bio: [
@@ -144,7 +144,7 @@ export const founders = [
   },
   {
     name: "Ar. Rajeena",
-    photo: "/images/founders/rajeena.jpg",
+    photo: "/images/founders/rajeena-new.jpg",
     role: "Co-Founder | Design Director",
     creds: "B.Arch, MMUP, Intl. Assoc. AIA, RIBA, COA",
     bio: [

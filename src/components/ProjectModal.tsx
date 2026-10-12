@@ -55,14 +55,16 @@ export function ProjectModal() {
 
         {/* Gallery Carousel / Stack */}
         <div className="space-y-6 mb-12">
-          {project.gallery.map((imgSrc, idx) => (
-            <div key={idx} className="relative w-full aspect-[16/10] overflow-hidden bg-[#E8E3DC]">
+          {project.gallery.map((img, idx) => (
+            <div key={img.src} className="relative w-full overflow-hidden bg-[#E8E3DC]">
               <Image
-                src={imgSrc}
+                src={img.src}
                 alt={`${project.title} - View ${idx + 1}`}
-                fill
+                width={img.w}
+                height={img.h}
                 sizes="(max-width: 1024px) 100vw, 896px"
-                className="object-cover w-full h-full"
+                loading={idx < 2 ? "eager" : "lazy"}
+                className="w-full h-auto"
               />
             </div>
           ))}
@@ -76,32 +78,37 @@ export function ProjectModal() {
               {language === "EN" ? project.location : project.locationEs}
             </p>
           </div>
-          <div>
-            <span className="text-[#736E67] block">{t.projects.year}</span>
-            <p className="mt-1 font-normal text-[#1A1A1A]">{project.year}</p>
-          </div>
+          {project.year && (
+            <div>
+              <span className="text-[#736E67] block">{t.projects.year}</span>
+              <p className="mt-1 font-normal text-[#1A1A1A]">{project.year}</p>
+            </div>
+          )}
           <div>
             <span className="text-[#736E67] block">{t.projects.typology}</span>
             <p className="mt-1 font-normal text-[#1A1A1A]">
               {language === "EN" ? project.category : project.categoryEs}
             </p>
           </div>
-          <div>
-            <span className="text-[#736E67] block">{t.projects.status}</span>
-            <p className="mt-1 font-normal text-[#1A1A1A]">
-              {language === "EN" ? project.status : project.statusEs}
-            </p>
-          </div>
+          {project.status && (
+            <div>
+              <span className="text-[#736E67] block">{t.projects.status}</span>
+              <p className="mt-1 font-normal text-[#1A1A1A]">
+                {language === "EN" ? project.status : project.statusEs}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Narrative & Materiality */}
+        {(project.brief || project.response || project.materials) && (
         <div className="py-10 space-y-8">
           <div>
             <h4 className="text-[11px] tracking-[0.2em] uppercase font-light text-[#736E67] mb-2">
               {language === "EN" ? "THE BRIEF" : "EL ENCARGO"}
             </h4>
             <p className="text-[15px] font-light leading-relaxed text-[#1A1A1A]">
-              {language === "EN" ? project.brief : project.briefEs}
+              {language === "EN" ? project.brief : project.briefEs ?? project.brief}
             </p>
           </div>
 
@@ -123,6 +130,7 @@ export function ProjectModal() {
             </p>
           </div>
         </div>
+        )}
 
         {/* Footer in Drawer */}
         <div className="border-t border-[#1A1A1A]/10 pt-6 flex justify-between items-center text-[11px] tracking-[0.16em] uppercase font-light text-[#736E67]">

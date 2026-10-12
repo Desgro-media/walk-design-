@@ -64,7 +64,6 @@ export function SiteLoader() {
       gsap.set(panelRef.current, { scaleX: 0, opacity: 0, svgOrigin: "693 450" });
       gsap.set(nameRef.current, { opacity: 0, y: 8 });
       gsap.set(stepRefs.current, { opacity: 0 });
-      gsap.set(stageRef.current, { transformPerspective: 1200, rotateY: -32, rotateX: 12, scale: 0.92 });
 
       const STEP_GAP = 0.45; // seconds between steps
       const LAST_LAND = (STEPS.length - 1) * STEP_GAP + 0.3;
@@ -83,9 +82,7 @@ export function SiteLoader() {
         // 5. name appears once the last step has landed
         .to(nameRef.current, { opacity: 1, y: 0, duration: 1.1, ease: "sine.out" }, `walk+=${LAST_LAND}`)
         // 6. hold, then reveal the page
-        .to(overlayRef.current, { opacity: 0, duration: 1.1, ease: "sine.inOut" }, `walk+=${LAST_LAND + 2.4}`)
-        // 3D camera sweep runs alongside everything: starts angled, settles face-on
-        .to(stageRef.current, { rotateY: 0, rotateX: 0, scale: 1, duration: 6, ease: "sine.inOut" }, 0);
+        .to(overlayRef.current, { opacity: 0, duration: 1.1, ease: "sine.inOut" }, `walk+=${LAST_LAND + 2.4}`);
     };
 
     // Start only after the page has finished loading and painted, so the first seconds aren't lost to jank
@@ -111,7 +108,7 @@ export function SiteLoader() {
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#F4F1EC]"
     >
       <div ref={stageRef} style={{ willChange: "transform", backfaceVisibility: "hidden" }}>
-      <svg viewBox="-60 80 880 740" className="h-64 sm:h-80 w-auto" fill="none">
+      <svg viewBox="141 80 880 740" className="h-64 sm:h-80 w-auto overflow-visible" fill="none">
         <path
           ref={frameRef}
           d={MARK_FRAME_PATH}
@@ -144,7 +141,7 @@ export function SiteLoader() {
         />
       </svg>
       </div>
-      <p ref={nameRef} className="mt-10 text-[18px] sm:text-[26px] tracking-[0.45em] uppercase font-light text-[#4A543B] opacity-0">
+      <p ref={nameRef} className="mt-10 pl-[0.45em] text-[18px] sm:text-[26px] tracking-[0.45em] uppercase font-light text-[#4A543B] opacity-0">
         Walk In Design
       </p>
     </div>

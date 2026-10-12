@@ -220,7 +220,7 @@ export function ContactModal() {
         {/* Bottom studio credentials */}
         <div className="mt-12 pt-6 border-t border-[#1A1A1A]/10 text-[10.5px] tracking-[0.18em] uppercase font-light text-[#736E67] flex justify-between">
           <span>QATAR & INDIA</span>
-          <span>+974 3051 0534 • +974 3136 8043</span>
+          <span>+974 5175 3798 • +974 5175 3799</span>
         </div>
       </div>
     </div>

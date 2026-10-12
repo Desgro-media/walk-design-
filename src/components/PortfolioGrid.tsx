@@ -7,7 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { Tilt } from "@/components/Tilt";
 import { Reveal3D } from "@/components/Reveal3D";
 
-type Filter = "all" | "architecture" | "interior" | "landscape";
+type Filter = "all" | "architecture" | "interior" | "landscape" | "commercial";
 type View = "grid" | "list";
 
 const TITLE = "#4F575B";
@@ -18,6 +18,7 @@ const filters: { key: Filter; en: string; es: string }[] = [
   { key: "architecture", en: "Architecture", es: "Arquitectura" },
   { key: "interior", en: "Interiors", es: "Interiores" },
   { key: "landscape", en: "Landscape", es: "Paisajismo" },
+  { key: "commercial", en: "Commercial", es: "Comercial" },
 ];
 
 function GridIcon() {
@@ -136,7 +137,7 @@ export function PortfolioGrid() {
                         {en ? p.title : p.titleEs}
                       </p>
                       <p className="mt-1 tracking-[0.14em] font-light" style={{ color: META }}>
-                        {en ? p.location : p.locationEs} · {p.year}
+                        {en ? p.location : p.locationEs}{p.year ? ` · ${p.year}` : ""}
                       </p>
                     </div>
                   </div>
@@ -178,7 +179,7 @@ export function PortfolioGrid() {
                     {p.comingSoon ? (en ? "Coming soon" : "Próximamente") : en ? p.location : p.locationEs}
                   </span>
                   <span className="text-[13px] tracking-[0.14em] font-light w-12 text-right" style={{ color: META }}>
-                    {p.year}
+                    {p.year ?? ""}
                   </span>
                 </button>
               </li>

@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 
 export function Header() {
-  const { language, setLanguage, t, setIsContactModalOpen, setIsStudioModalOpen } = useLanguage();
+  const { language, t, setIsContactModalOpen, setIsStudioModalOpen } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -89,41 +89,10 @@ export function Header() {
           >
             {t.nav.contact}
           </button>
-
-          {/* Language Switch: EN | ES */}
-          <div className="flex items-center space-x-1 pl-4 border-l border-current/20 text-[11px] tracking-[0.16em] font-light">
-            <button
-              onClick={() => setLanguage("EN")}
-              className={`transition-opacity cursor-pointer ${
-                language === "EN" ? "font-normal opacity-100 underline underline-offset-4" : "opacity-40 hover:opacity-80"
-              }`}
-              title="English"
-            >
-              EN
-            </button>
-            <span className="opacity-30">|</span>
-            <button
-              onClick={() => setLanguage("ES")}
-              className={`transition-opacity cursor-pointer ${
-                language === "ES" ? "font-normal opacity-100 underline underline-offset-4" : "opacity-40 hover:opacity-80"
-              }`}
-              title="Español"
-            >
-              ES
-            </button>
-          </div>
         </div>
 
         {/* Mobile Hamburger Button */}
         <div className="flex items-center lg:hidden space-x-4">
-          <div className="flex items-center space-x-1 text-[11px] tracking-[0.14em] font-light pr-2">
-            <button
-              onClick={() => setLanguage(language === "EN" ? "ES" : "EN")}
-              className="opacity-90 underline underline-offset-2 cursor-pointer min-h-11 px-2"
-            >
-              {language}
-            </button>
-          </div>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle Navigation Menu"
@@ -195,23 +164,8 @@ export function Header() {
         <div className="border-t border-[#1A1A1A]/10 pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 text-[11px] tracking-[0.18em] font-light text-[#736E67]">
           <div>
             <p>QATAR & INDIA</p>
-            <p className="mt-1">+974 3051 0534</p>
-            <p className="mt-1">+974 3136 8043</p>
-          </div>
-          <div className="flex items-center space-x-3 text-[#1A1A1A]">
-            <button
-              onClick={() => setLanguage("EN")}
-              className={`cursor-pointer ${language === "EN" ? "font-normal underline" : "opacity-40"}`}
-            >
-              ENGLISH
-            </button>
-            <span className="opacity-30">/</span>
-            <button
-              onClick={() => setLanguage("ES")}
-              className={`cursor-pointer ${language === "ES" ? "font-normal underline" : "opacity-40"}`}
-            >
-              ESPAÑOL
-            </button>
+            <p className="mt-1">+974 5175 3798</p>
+            <p className="mt-1">+974 5175 3799</p>
           </div>
         </div>
       </div>
