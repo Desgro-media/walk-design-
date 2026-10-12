@@ -100,36 +100,42 @@ export function ProjectModal() {
           )}
         </div>
 
-        {/* Narrative & Materiality */}
+        {/* Narrative & Materiality (each part only when the project has it) */}
         {(project.brief || project.response || project.materials) && (
-        <div className="py-10 space-y-8">
-          <div>
-            <h4 className="text-[11px] tracking-[0.2em] uppercase font-light text-[#736E67] mb-2">
-              {language === "EN" ? "THE BRIEF" : "EL ENCARGO"}
-            </h4>
-            <p className="text-[15px] font-light leading-relaxed text-[#1A1A1A]">
-              {language === "EN" ? project.brief : project.briefEs ?? project.brief}
-            </p>
-          </div>
+          <div className="py-10 space-y-8">
+            {project.brief && (
+              <div>
+                <h4 className="text-[11px] tracking-[0.2em] uppercase font-light text-[#736E67] mb-2">
+                  {language === "EN" ? "PROJECT BRIEF" : "EL ENCARGO"}
+                </h4>
+                <p className="text-[15px] font-light leading-relaxed text-[#1A1A1A]">
+                  {language === "EN" ? project.brief : project.briefEs ?? project.brief}
+                </p>
+              </div>
+            )}
 
-          <div>
-            <h4 className="text-[11px] tracking-[0.2em] uppercase font-light text-[#736E67] mb-2">
-              {language === "EN" ? "OUR ARCHITECTURAL RESPONSE" : "NUESTRA RESPUESTA ARQUITECTÓNICA"}
-            </h4>
-            <p className="text-[15px] font-light leading-relaxed text-[#1A1A1A]">
-              {language === "EN" ? project.response : project.responseEs}
-            </p>
-          </div>
+            {project.response && (
+              <div>
+                <h4 className="text-[11px] tracking-[0.2em] uppercase font-light text-[#736E67] mb-2">
+                  {language === "EN" ? "OUR ARCHITECTURAL RESPONSE" : "NUESTRA RESPUESTA ARQUITECTÓNICA"}
+                </h4>
+                <p className="text-[15px] font-light leading-relaxed text-[#1A1A1A]">
+                  {language === "EN" ? project.response : project.responseEs ?? project.response}
+                </p>
+              </div>
+            )}
 
-          <div>
-            <h4 className="text-[11px] tracking-[0.2em] uppercase font-light text-[#736E67] mb-2">
-              {t.projects.materials}
-            </h4>
-            <p className="text-[13.5px] font-light tracking-[0.04em] text-[#A9876B]">
-              {language === "EN" ? project.materials : project.materialsEs}
-            </p>
+            {project.materials && (
+              <div>
+                <h4 className="text-[11px] tracking-[0.2em] uppercase font-light text-[#736E67] mb-2">
+                  {t.projects.materials}
+                </h4>
+                <p className="text-[13.5px] font-light tracking-[0.04em] text-[#A9876B]">
+                  {language === "EN" ? project.materials : project.materialsEs ?? project.materials}
+                </p>
+              </div>
+            )}
           </div>
-        </div>
         )}
 
         {/* Footer in Drawer */}

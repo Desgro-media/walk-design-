@@ -3,49 +3,19 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+import { projectsData } from "@/data/projects";
 
-const interiorDetails = [
-  {
-    id: "detail-01",
-    titleEn: "MONOLITHIC HEARTH & RAW OAK",
-    titleEs: "HOGAR MONOLÍTICO & ROBLE CRUDO",
-    subEn: "Lusail Villa • Floor-to-ceiling brushed timber",
-    subEs: "Villa Lusail • Madera cepillada de suelo a techo",
-    image: "/images/interiors/interior-01-fireplace.jpg",
-  },
-  {
-    id: "detail-02",
-    titleEn: "FLUTED MARBLE ISLAND & BRONZE",
-    titleEs: "ISLA DE MÁRMOL ESTRIADO & BRONCE",
-    subEn: "Casa Travertino • Navona stone with integrated brass",
-    subEs: "Casa Travertino • Piedra Navona con latón integrado",
-    image: "/images/interiors/interior-02-kitchen-island.jpg",
-  },
-  {
-    id: "detail-03",
-    titleEn: "FLOATING CANTILEVERED STAIR",
-    titleEs: "ESCALERA VOLADA EN MICROCEMENTO",
-    subEn: "Atelier Al Waab • Monolithic concrete with continuous cove",
-    subEs: "Atelier Al Waab • Hormigón visto con iluminación fajeada",
-    image: "/images/interiors/interior-03-staircase.jpg",
-  },
-  {
-    id: "detail-04",
-    titleEn: "PIVOT APERTURE & COURTYARD LIGHT",
-    titleEs: "APERTURA PIVOTANTE & LUZ DE PATIO",
-    subEn: "Pavilion Duhail • Slim bronzed steel profile",
-    subEs: "Pabellón Duhail • Perfilería esbelta en acero bronceado",
-    image: "/images/interiors/interior-04-courtyard-pivot.jpg",
-  },
-  {
-    id: "detail-05",
-    titleEn: "HONED STONE BASIN & CONCEALED SPOUT",
-    titleEs: "LAVABO EN PIEDRA APOMAZADA & CAÑO OCULTO",
-    subEn: "Desert Sanctuary • Custom sculpted stone block",
-    subEs: "Santuario del Desierto • Bloque de piedra esculpido a mano",
-    image: "/images/interiors/interior-05-bathroom-niche.jpg",
-  },
-];
+// One tile per interior project, using its cover photo
+const interiorDetails = projectsData
+  .filter((p) => p.categoryKey === "interior")
+  .map((p) => ({
+    id: p.id,
+    titleEn: p.title,
+    titleEs: p.titleEs,
+    subEn: p.location,
+    subEs: p.locationEs,
+    image: p.image,
+  }));
 
 export function InteriorStrip() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -136,7 +106,7 @@ export function InteriorStrip() {
             className="group flex-shrink-0 w-[300px] sm:w-[420px] md:w-[480px] flex flex-col select-none"
           >
             {/* Image Tile */}
-            <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#D8D2C7]">
+            <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#D8D2C7]">
               <Image
                 src={detail.image}
                 alt={detail.titleEn}

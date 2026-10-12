@@ -10,6 +10,7 @@ import { ProjectModal } from "@/components/ProjectModal";
 import { ContactModal } from "@/components/ContactModal";
 import { SiteLoader } from "@/components/SiteLoader";
 import { StudioModal } from "@/components/StudioModal";
+import { ChatBot } from "@/components/ChatBot";
 
 function ScrollToTopOnRoute() {
   const pathname = usePathname();
@@ -33,6 +34,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           <ProjectModal />
           <ContactModal />
           <StudioModal />
+          <ChatBot />
         </div>
       </SmoothScroll>
     </LanguageProvider>

@@ -38,6 +38,7 @@ export const projectsData: Project[] = [
     categoryKey: "architecture",
     location: "Lusail, Qatar",
     locationEs: "Lusail, Qatar",
+    brief: "A contemporary villa defined by clean architectural lines, warm stone finishes, and a striking double-height entrance. Expansive glazing and shaded terraces connect the interiors with landscaped gardens, while timber accents and soft lighting bring warmth to the minimalist design—creating an elegant setting for modern family living.",
     image: "/images/projects/architecture/architecture-01-lusail-qatar/01.webp",
     gallery: [
       { src: "/images/projects/architecture/architecture-01-lusail-qatar/01.webp", w: 1672, h: 941 },
@@ -57,6 +58,7 @@ export const projectsData: Project[] = [
     categoryKey: "architecture",
     location: "Thrishur, India",
     locationEs: "Thrishur, India",
+    brief: "A contemporary mosque that brings together simple geometric forms, elegant twin minarets, and intricately patterned screens. Warm stone finishes and shaded entrances sit naturally within Kerala’s tropical landscape, creating a welcoming place for prayer, reflection, and community.",
     image: "/images/projects/architecture/architecture-02-thrishur-india/01.webp",
     gallery: [
       { src: "/images/projects/architecture/architecture-02-thrishur-india/01.webp", w: 1672, h: 941 },
@@ -74,6 +76,7 @@ export const projectsData: Project[] = [
     categoryKey: "architecture",
     location: "Al Rayyan, Qatar",
     locationEs: "Al Rayyan, Qatar",
+    brief: "A contemporary residence featuring warm stone façades, vertical screens, and a grand entrance. Generous glazing and layered terraces overlook landscaped gardens and a tranquil pool, bringing a sense of openness to the home. Subtle architectural lighting highlights the clean geometry, creating a refined setting for family living.",
     image: "/images/projects/architecture/architecture-02-al-rayyan-qatar/01.webp",
     gallery: [
       { src: "/images/projects/architecture/architecture-02-al-rayyan-qatar/01.webp", w: 1536, h: 1024 },
@@ -94,6 +97,7 @@ export const projectsData: Project[] = [
     categoryKey: "architecture",
     location: "Duhail, Qatar",
     locationEs: "Duhail, Qatar",
+    brief: "A neoclassical villa defined by grand columns, arched openings, and finely detailed stone façades. Ornamental cornices and elegant balustrades frame an impressive entrance, while landscaped gardens and a courtyard fountain soften the formal architecture. Warm lighting and rich textures create a welcoming residence with a sense of timeless grandeur.",
     image: "/images/projects/architecture/architecture-03-duhail-qatar/01.webp",
     gallery: [
       { src: "/images/projects/architecture/architecture-03-duhail-qatar/01.webp", w: 1536, h: 1024 },
@@ -112,6 +116,7 @@ export const projectsData: Project[] = [
     categoryKey: "architecture",
     location: "Al Gharrafa, Qatar",
     locationEs: "Al Gharrafa, Qatar",
+    brief: "A neoclassical residence distinguished by soaring fluted columns, a triangular pediment, and warm ivory stone finishes. Balanced proportions and finely detailed cornices frame a grand glazed entrance, while palm-lined gardens and a circular fountain create an elegant arrival experience.",
     image: "/images/projects/architecture/architecture-04-al-gharrafa-qatar/01.webp",
     gallery: [
       { src: "/images/projects/architecture/architecture-04-al-gharrafa-qatar/01.webp", w: 1536, h: 1024 },
@@ -130,6 +135,7 @@ export const projectsData: Project[] = [
     categoryKey: "architecture",
     location: "Al Thumama, Qatar",
     locationEs: "Al Thumama, Qatar",
+    brief: "A modern classical villa combining warm ivory stone, graceful arched windows, and understated decorative detailing. A soaring arched entrance anchors the façade, complemented by dark metal accents and soft architectural lighting. Olive trees and layered planting bring warmth and privacy to this elegant family home.",
     image: "/images/projects/architecture/architecture-05-al-thumama-qatar/01.webp",
     gallery: [
       { src: "/images/projects/architecture/architecture-05-al-thumama-qatar/01.webp", w: 1536, h: 1024 },
@@ -147,6 +153,7 @@ export const projectsData: Project[] = [
     categoryKey: "architecture",
     location: "Al Waab, Qatar",
     locationEs: "Al Waab, Qatar",
+    brief: "A contemporary minimalist villa composed of crisp white volumes, expansive glazing, and bold black frames. A double-height entrance connects the staggered forms, while olive trees and a reflecting pool bring calm to the arrival space. Recessed terraces and warm lighting add depth and softness to the clean architectural composition.",
     image: "/images/projects/architecture/architecture-06-al-waab-qatar/01.webp",
     gallery: [
       { src: "/images/projects/architecture/architecture-06-al-waab-qatar/01.webp", w: 1536, h: 1024 },
@@ -165,6 +172,7 @@ export const projectsData: Project[] = [
     categoryKey: "architecture",
     location: "Al Shamal, Qatar",
     locationEs: "Al Shamal, Qatar",
+    brief: "A contemporary villa shaped by sculptural volumes, warm stone textures, and a striking recessed entrance. A generous upper terrace shelters the parking below, while expansive glazing connects living spaces with planted balconies. Timber accents, olive trees, and subtle lighting soften the bold architecture, creating a calm and welcoming home.",
     image: "/images/projects/architecture/architecture-07-al-shamal-qatar/01.webp",
     gallery: [
       { src: "/images/projects/architecture/architecture-07-al-shamal-qatar/01.webp", w: 832, h: 462 },
@@ -182,6 +190,7 @@ export const projectsData: Project[] = [
     categoryKey: "interior",
     location: "Lusail, Qatar",
     locationEs: "Lusail, Qatar",
+    brief: "A contemporary home interior combining warm timber, natural stone finishes, and a soft neutral palette. Elegant living and dining spaces flow into restful bedrooms, unified by sculptural lighting, textured fabrics, and subtle bronze accents. Generous glazing frames garden views and welcomes daylight, creating a calm balance of understated luxury and everyday comfort.",
     image: "/images/projects/interior/interior-01-lusail-qatar/01.webp",
     gallery: [
       { src: "/images/projects/interior/interior-01-lusail-qatar/01.webp", w: 1672, h: 941 },
@@ -206,6 +215,7 @@ export const projectsData: Project[] = [
     categoryKey: "interior",
     location: "Al Rayyan, Qatar",
     locationEs: "Al Rayyan, Qatar",
+    brief: "A luxurious classical interior defined by intricate wall mouldings, ivory tones, and gold accents. Crystal chandeliers and marble finishes enrich the majlis, dining room, and bedrooms, while a sweeping twin staircase creates a striking entrance. Rich timber furniture and soft textiles bring warmth and comfort to the grand spaces.",
     image: "/images/projects/interior/interior-02-al-rayyan-qatar/01.webp",
     gallery: [
       { src: "/images/projects/interior/interior-02-al-rayyan-qatar/01.webp", w: 1672, h: 941 },
@@ -232,6 +242,7 @@ export const projectsData: Project[] = [
     categoryKey: "interior",
     location: "Al Khor, Qatar",
     locationEs: "Al Khor, Qatar",
+    brief: "A modern classical interior blending delicate wall mouldings with contemporary furniture and warm neutral tones. Herringbone timber flooring, stone surfaces, and soft upholstery bring texture to the bedrooms and dining spaces, while generous garden-facing windows brighten the family lounge. Subtle brass accents and layered lighting create an atmosphere of understated luxury and everyday comfort.",
     image: "/images/projects/interior/interior-03-al-khor-qatar/01.webp",
     gallery: [
       { src: "/images/projects/interior/interior-03-al-khor-qatar/01.webp", w: 1536, h: 1024 },
@@ -256,6 +267,7 @@ export const projectsData: Project[] = [
     categoryKey: "interior",
     location: "UAE",
     locationEs: "UAE",
+    brief: "A modern classical interior defined by a striking black and ivory palette, refined wall panelling, and rich timber flooring. Leather seating, marble surfaces, and elegant lighting give the living, dining, and bedroom spaces a cohesive character. Soft textiles and garden views balance the bold contrasts, creating a welcoming home with timeless sophistication.",
     image: "/images/projects/interior/interior-04-uae/01.webp",
     gallery: [
       { src: "/images/projects/interior/interior-04-uae/01.webp", w: 1536, h: 1024 },
@@ -285,6 +297,7 @@ export const projectsData: Project[] = [
     categoryKey: "interior",
     location: "Duhail, Qatar",
     locationEs: "Duhail, Qatar",
+    brief: "A contemporary interior combining warm timber panelling, textured stone finishes, and soft neutral tones. Inviting bedrooms, spacious living areas, and an elegant dining space feature clean lines and gently rounded furniture. Subtle bronze accents, concealed lighting, and generous daylight create a calm, cohesive home with an emphasis on comfort and understated luxury.",
     image: "/images/projects/interior/interior-05-duhail-qatar/01.webp",
     gallery: [
       { src: "/images/projects/interior/interior-05-duhail-qatar/01.webp", w: 1536, h: 1024 },
@@ -310,6 +323,7 @@ export const projectsData: Project[] = [
     categoryKey: "interior",
     location: "New Salata, Qatar",
     locationEs: "New Salata, Qatar",
+    brief: "A contemporary villa interior defined by warm timber, soft ivory tones, and sculptural lighting. A dramatic double-height entrance introduces welcoming majlis, dining, and family spaces, where curved furniture and textured finishes create a sense of comfort. Illuminated shelving, distinctive stone feature walls, and carefully detailed joinery bring individual character to a cohesive, elegant home.",
     image: "/images/projects/interior/interior-06-new-salata-qatar/01.webp",
     gallery: [
       { src: "/images/projects/interior/interior-06-new-salata-qatar/01.webp", w: 1199, h: 1499 },
@@ -354,6 +368,7 @@ export const projectsData: Project[] = [
     categoryKey: "interior",
     location: "Al kheesa, Qatar",
     locationEs: "Al kheesa, Qatar",
+    brief: "A luxurious villa interior bringing together warm timber, elegant stone finishes, and rich metallic accents. Generous majlis spaces, restful bedrooms, and an indoor pool lounge balance family comfort with refined hospitality. Skylit spaces, sculptural chandeliers, and decorative wall panels add character, while soft neutral tones and integrated greenery create a welcoming atmosphere throughout.",
     image: "/images/projects/interior/interior-07-al-kheesa-qatar/01.webp",
     gallery: [
       { src: "/images/projects/interior/interior-07-al-kheesa-qatar/01.webp", w: 2000, h: 1117 },
@@ -387,6 +402,7 @@ export const projectsData: Project[] = [
     categoryKey: "landscape",
     location: "Al Waab, Qatar",
     locationEs: "Al Waab, Qatar",
+    brief: "The villa garden pairs classical symmetry with lush planting and inviting outdoor spaces. A central fountain anchors the layout, framed by manicured lawns, clipped hedges, and flowering borders. Stone pathways connect a shaded pergola lounge and quiet seating areas, creating an elegant setting for relaxation and family gatherings.",
     image: "/images/projects/landscape/landscape-01-al-waab-qatar/01.webp",
     gallery: [
       { src: "/images/projects/landscape/landscape-01-al-waab-qatar/01.webp", w: 1536, h: 1024 },
@@ -404,6 +420,7 @@ export const projectsData: Project[] = [
     categoryKey: "landscape",
     location: "Al Kheesa, Qatar",
     locationEs: "Al Kheesa, Qatar",
+    brief: "The contemporary garden extends the villa’s clean architectural lines into a welcoming outdoor retreat. A linear water feature, shaded pergola lounge, and expansive lawn define spaces for relaxation and gathering. Sculptural trees, layered planting, and pale stone pathways soften the geometry, while subtle lighting brings warmth to the garden after sunset.",
     image: "/images/projects/landscape/landscape-02-al-kheesa-qatar/01.webp",
     gallery: [
       { src: "/images/projects/landscape/landscape-02-al-kheesa-qatar/01.webp", w: 1536, h: 1024 },
@@ -420,6 +437,7 @@ export const projectsData: Project[] = [
     categoryKey: "landscape",
     location: "Al Khor, Qatar",
     locationEs: "Al Khor, Qatar",
+    brief: "Landscape brings a resort atmosphere to private villa living. A central swimming pool, timber pergola lounge, and sun terraces create inviting spaces for relaxation and entertaining. Layered planting, sculptural trees, and warm stone finishes connect the pool garden with an elegant entrance landscape, enriched by water features and subtle evening lighting.",
     image: "/images/projects/landscape/landscape-03-al-khor-qatar/01.webp",
     gallery: [
       { src: "/images/projects/landscape/landscape-03-al-khor-qatar/01.webp", w: 1536, h: 1024 },
@@ -437,6 +455,7 @@ export const projectsData: Project[] = [
     categoryKey: "landscape",
     location: "Lusail, Qatar",
     locationEs: "Lusail, Qatar",
+    brief: "The landscape complements the villa’s classical architecture with formal gardens, elegant stone paving, and shaded pavilions. A central fountain defines the entrance garden, while a swimming pool with a curved end forms the heart of the private leisure area. Tall palms, flowering borders, and warm lighting create a graceful setting for outdoor living.",
     image: "/images/projects/landscape/landscape-04-lusail-qatar/01.webp",
     gallery: [
       { src: "/images/projects/landscape/landscape-04-lusail-qatar/01.webp", w: 1536, h: 1024 },
@@ -455,6 +474,7 @@ export const projectsData: Project[] = [
     categoryKey: "landscape",
     location: "Dubai",
     locationEs: "Dubai",
+    brief: "The landscape blends contemporary outdoor living with Arabian architectural details. Geometric screens frame shaded lounges, while a generous swimming pool and twin entrance water features create tranquil focal points. Warm stone paving, sculptural trees, palms, and flowering accents bring texture and colour, complemented by soft lighting for relaxed evening gatherings.",
     image: "/images/projects/landscape/landscape-05-dubai/01.webp",
     gallery: [
       { src: "/images/projects/landscape/landscape-05-dubai/01.webp", w: 1536, h: 1024 },
@@ -473,6 +493,7 @@ export const projectsData: Project[] = [
     categoryKey: "commercial",
     location: "Al Waab, Qatar",
     locationEs: "Al Waab, Qatar",
+    brief: "A luxurious salon interior combining black and white marble finishes with gold metal accents. Arched mirrors, soft seating, and warm lighting create an inviting atmosphere, while fluted glass partitions define the hair-wash area. Carefully arranged styling stations balance everyday functionality with an elegant, comfortable client experience.",
     image: "/images/projects/commercial/commercial-01-al-waab-qatar/01.webp",
     gallery: [
       { src: "/images/projects/commercial/commercial-01-al-waab-qatar/01.webp", w: 1619, h: 971 },
@@ -490,6 +511,7 @@ export const projectsData: Project[] = [
     categoryKey: "commercial",
     location: "Al Ghanim, Qatar",
     locationEs: "Al Ghanim, Qatar",
+    brief: "A contemporary salon combining rich timber, rose-veined marble, and soft blush seating. Curved ceilings and gold-framed mirrors bring fluidity to the space, while warm lighting creates a relaxed atmosphere. A welcoming lounge, central styling stations, and dedicated treatment areas balance refined design with everyday comfort.",
     image: "/images/projects/commercial/commercial-02-al-ghanim-qatar/01.webp",
     gallery: [
       { src: "/images/projects/commercial/commercial-02-al-ghanim-qatar/01.webp", w: 1672, h: 941 },
@@ -507,6 +529,7 @@ export const projectsData: Project[] = [
     categoryKey: "commercial",
     location: "Al Waab, Qatar",
     locationEs: "Al Waab, Qatar",
+    brief: "A luxurious contemporary salon defined by black marble flooring, ivory finishes, and gold accents. Circular styling islands with suspended mirrors echo the curved ceiling details, giving the space a distinctive identity. An illuminated reception desk, soft lounge seating, and generous daylight create a welcoming setting for a relaxed beauty experience.",
     image: "/images/projects/commercial/commercial-03-al-waab-qatar/01.webp",
     gallery: [
       { src: "/images/projects/commercial/commercial-03-al-waab-qatar/01.webp", w: 1536, h: 1024 },

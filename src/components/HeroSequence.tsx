@@ -5,53 +5,33 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/context/LanguageContext";
+import { projectsData } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const heroImages = [
-  {
-    src: "/images/hero/hero-01-vestibule.jpg",
-    alt: "Travertine Entrance Atrium & Limewash Vestibule",
-    roomEn: "01 / 07 — VESTIBULE & MONOLITHIC TRAVERTINE",
-    roomEs: "01 / 07 — VESTÍBULO & TRAVERTINO MONOLÍTICO",
-  },
-  {
-    src: "/images/hero/hero-02-oak-lounge.jpg",
-    alt: "Raw European Oak Paneling & Linen Salon",
-    roomEn: "02 / 07 — RAW OAK PANELING & LINEN SALON",
-    roomEs: "02 / 07 — PANELES DE ROBLE & SALÓN DE LINO",
-  },
-  {
-    src: "/images/hero/hero-03-travertine-dining.jpg",
-    alt: "Fluted Stone & Dining Loggia",
-    roomEn: "03 / 07 — FLUTED STONE & DINING LOGGIA",
-    roomEs: "03 / 07 — PIEDRA ACANALADA & LOGIA COMEDOR",
-  },
-  {
-    src: "/images/hero/hero-04-microcement-gallery.jpg",
-    alt: "Greige Microcement Gallery Corridor",
-    roomEn: "04 / 07 — GREIGE MICROCEMENT GALLERY",
-    roomEs: "04 / 07 — GALERÍA EN MICROCEMENTO GREIGE",
-  },
-  {
-    src: "/images/hero/hero-05-courtyard-olive.jpg",
-    alt: "Inner Limestone Courtyard with Sculptural Olive Tree Leaf Accent",
-    roomEn: "05 / 07 — COURTYARD & OLIVE LEAF ACCENT",
-    roomEs: "05 / 07 — PATIO & ACENTO EN HOJA DE OLIVO",
-  },
-  {
-    src: "/images/hero/hero-06-linen-sanctuary.jpg",
-    alt: "Natural Linen Bedding & Low Oak Platform Sanctuary",
-    roomEn: "06 / 07 — BEDROOM SANCTUARY & NATURAL LINEN",
-    roomEs: "06 / 07 — SANTUARIO DORMITORIO & LINO NATURAL",
-  },
-  {
-    src: "/images/hero/hero-07-stone-bath.jpg",
-    alt: "Honed Limestone Bath Pavilion & Still Daylight",
-    roomEn: "07 / 07 — HONED LIMESTONE BATH PAVILION",
-    roomEs: "07 / 07 — PABELLÓN DE BAÑO EN PIEDRA CALIZA",
-  },
+// Real project photos, one per scroll step: [project id, which photo of its gallery]
+const HERO_PICKS: [string, number][] = [
+  ["architecture-01-lusail-qatar", 0],
+  ["interior-01-lusail-qatar", 0],
+  ["landscape-01-al-waab-qatar", 0],
+  ["architecture-06-al-waab-qatar", 0],
+  ["interior-07-al-kheesa-qatar", 0],
+  ["landscape-03-al-khor-qatar", 0],
+  ["interior-02-al-rayyan-qatar", 0],
 ];
+
+const heroImages = HERO_PICKS.map(([id, photo], i) => {
+  const project = projectsData.find((p) => p.id === id);
+  if (!project) throw new Error(`Hero project not found: ${id}`);
+  const n = `${String(i + 1).padStart(2, "0")} / ${String(HERO_PICKS.length).padStart(2, "0")}`;
+  const label = `${n} — ${project.category} · ${project.location}`.toUpperCase();
+  return {
+    src: project.gallery[photo].src,
+    alt: `${project.title}, ${project.location}`,
+    roomEn: label,
+    roomEs: `${n} — ${project.categoryEs} · ${project.locationEs}`.toUpperCase(),
+  };
+});
 
 export function HeroSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -172,7 +152,7 @@ export function HeroSequence() {
         ))}
 
         {/* Minimal Quiet Room Indicator & Scroll Hint — pinned at bottom corners, pure & non-intrusive */}
-        <div className="absolute bottom-8 sm:bottom-10 left-6 sm:left-10 md:left-14 right-6 sm:right-10 md:right-14 z-20 flex justify-between items-end pointer-events-none text-white/90 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
+        <div className="absolute bottom-8 sm:bottom-10 left-6 sm:left-10 md:left-14 right-6 sm:right-52 z-20 flex justify-between items-end pointer-events-none text-white/90 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
           {/* Left: Active Room Progression */}
           <div className="flex flex-col space-y-1">
             <span className="text-[10px] sm:text-[11px] tracking-[0.24em] font-light uppercase transition-all duration-500">
