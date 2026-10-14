@@ -23,24 +23,39 @@ export function StudioModal() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [setIsStudioModalOpen]);
 
+  // Show the photo of the founder whose section has reached the lower-middle of the panel,
+  // and switch to the next one as soon as that section's top crosses that line
   useEffect(() => {
     if (!isStudioModalOpen) return;
-    const visible = new Set<number>();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const i = founderRefs.current.indexOf(entry.target as HTMLDivElement);
-          if (i < 0) return;
-          if (entry.isIntersecting) visible.add(i);
-          else visible.delete(i);
-        });
-        setFounderInView(visible.size > 0);
-        if (visible.size > 0) setShownFounder(Math.min(...visible));
-      },
-      { root: panelRef.current, rootMargin: "-25% 0px -35% 0px" }
-    );
-    founderRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
+    const panel = panelRef.current;
+    if (!panel) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const box = panel.getBoundingClientRect();
+      const line = box.top + box.height * 0.7;
+      let active = -1;
+      let lastBottom = -Infinity;
+      founderRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        if (r.top <= line) active = i;
+        lastBottom = Math.max(lastBottom, r.bottom);
+      });
+      const firstTop = founderRefs.current[0]?.getBoundingClientRect().top ?? Infinity;
+      const inView = firstTop < box.top + box.height * 0.8 && lastBottom > box.top + box.height * 0.25;
+      setFounderInView(inView);
+      setShownFounder(active < 0 ? 0 : active);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    panel.addEventListener("scroll", onScroll, { passive: true });
+    update();
+    return () => {
+      panel.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [isStudioModalOpen]);
 
   if (!isStudioModalOpen) return null;
