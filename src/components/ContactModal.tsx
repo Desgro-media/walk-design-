@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import { CareersPanel } from "@/components/CareersPanel";
 
 export function ContactModal() {
   const { isContactModalOpen, setIsContactModalOpen, language, t } = useLanguage();
@@ -47,6 +48,17 @@ export function ContactModal() {
       className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm transition-opacity duration-300"
       onClick={() => setIsContactModalOpen(false)}
     >
+      {/* Careers: fills the space to the left of the drawer on wide screens */}
+      <div className="absolute inset-y-0 left-0 right-[42rem] hidden xl:flex items-center justify-center p-12">
+        <div
+          data-lenis-prevent
+          onClick={(e) => e.stopPropagation()}
+          className="founder-reveal w-full max-w-md max-h-[80vh] overflow-y-auto"
+        >
+          <CareersPanel onDark />
+        </div>
+      </div>
+
       <div
         data-lenis-prevent
         className="relative w-full max-w-2xl h-full bg-[#F4F1EC] text-[#1A1A1A] overflow-y-auto p-8 sm:p-12 md:p-16 flex flex-col justify-between shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
@@ -215,6 +227,11 @@ export function ContactModal() {
               </div>
             </form>
           )}
+        </div>
+
+        {/* Careers (smaller screens; on wide screens it sits beside the drawer) */}
+        <div className="xl:hidden mt-12 pt-8 border-t border-[#1A1A1A]/10">
+          <CareersPanel />
         </div>
 
         {/* Bottom studio credentials */}
