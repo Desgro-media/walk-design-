@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { careersIntro, careersWhatsApp, openPositions } from "@/data/careers";
+import { careersCta, careersHeading, careersIntro, careersWhatsApp, noPositionsText, openPositions } from "@/data/careers";
 
 const waLink = (text: string) => `https://wa.me/${careersWhatsApp}?text=${encodeURIComponent(text)}`;
 
@@ -18,15 +18,15 @@ export function CareersPanel({ onDark = false }: { onDark?: boolean }) {
     <section aria-labelledby="careers-heading" className={text}>
       <p className={`text-[10px] tracking-[0.24em] uppercase font-light ${muted}`}>Careers</p>
       <h3 id="careers-heading" className="mt-3 text-2xl md:text-3xl font-light tracking-tight">
-        Join the studio
+        {careersHeading}
       </h3>
       <p className={`mt-4 text-[14px] font-light leading-relaxed ${muted}`}>{careersIntro}</p>
 
       <div className={`mt-8 border-t ${line} pt-6`}>
-        <p className={`text-[10px] tracking-[0.24em] uppercase font-light ${muted}`}>Open positions</p>
+        <p className={`text-[10px] tracking-[0.24em] uppercase font-light ${muted}`}>Current opportunities</p>
 
         {openPositions.length === 0 ? (
-          <p className="mt-3 text-[14px] font-light leading-relaxed">No open positions right now. New roles will be listed here.</p>
+          <p className="mt-3 text-[14px] font-light leading-relaxed">{noPositionsText}</p>
         ) : (
           <ul className="mt-2">
             {openPositions.map((p) => (
@@ -52,7 +52,7 @@ export function CareersPanel({ onDark = false }: { onDark?: boolean }) {
 
       <div className={`mt-8 border-t ${line} pt-6`}>
         <p className={`text-[13.5px] font-light leading-relaxed ${muted}`}>
-          Interested in future roles? Send us a message with your portfolio and CV.
+          {careersCta}
         </p>
         <a
           href={waLink("Hello Walk In Design, I'd like to be considered for future openings.")}

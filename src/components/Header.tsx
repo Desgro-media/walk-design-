@@ -11,32 +11,35 @@ export function Header() {
   const { language, t, setIsContactModalOpen, setIsStudioModalOpen } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const isHome = pathname === "/";
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
-  // Inner pages have no hero image, so the header is always solid there
-  const isPastHero = !isHome || scrolledPastHero || isMobileMenuOpen;
+  // Pages with a hero/banner photo ([data-hero]) get a transparent header over it; others are always solid
+  const hasHero = pathname === "/" || pathname === "/projects" || pathname === "/services";
+  const isPastHero = !hasHero || scrolledPastHero || isMobileMenuOpen;
 
   useEffect(() => {
-    if (!isHome) return;
+    if (!hasHero) return;
     const handleScroll = () => {
-      const heroElement = document.getElementById("hero-section");
-      if (heroElement) {
-        // Past the hero once its bottom is near the top of the viewport
-        setScrolledPastHero(heroElement.getBoundingClientRect().bottom <= 80);
-      }
+      const heroElement = document.querySelector("[data-hero]");
+      // Past the hero once its bottom is near the top of the viewport
+      setScrolledPastHero(heroElement ? heroElement.getBoundingClientRect().bottom <= 80 : true);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHome]);
+    // the new page's hero may mount just after the route changes
+    const t = window.setTimeout(handleScroll, 150);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.clearTimeout(t);
+    };
+  }, [hasHero, pathname]);
 
   return (
     <>
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 sm:px-10 md:px-14 py-5 md:py-6 flex items-center justify-between ${
           isPastHero
-            ? "bg-[#F4F1EC]/90 backdrop-blur-md text-[#1A1A1A] border-b border-[#1A1A1A]/8 shadow-[0_2px_20px_rgba(0,0,0,0.02)]"
+            ? "bg-white text-[#1A1A1A] border-b border-[#1A1A1A]/8"
             : "bg-gradient-to-b from-black/60 via-black/25 to-transparent text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]"
         }`}
       >
@@ -115,7 +118,7 @@ export function Header() {
       {/* Mobile Drawer Menu */}
       <div
         data-lenis-prevent
-        className={`fixed inset-0 z-40 overflow-y-auto bg-[#F4F1EC] text-[#1A1A1A] flex flex-col justify-between p-8 sm:p-12 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${
+        className={`fixed inset-0 z-40 overflow-y-auto bg-white text-[#1A1A1A] flex flex-col justify-between p-8 sm:p-12 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto translate-y-0"
             : "opacity-0 pointer-events-none -translate-y-4"

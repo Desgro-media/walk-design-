@@ -113,6 +113,7 @@ export function HeroSequence() {
   return (
     <section
       id="hero-section"
+      data-hero
       ref={containerRef}
       className="relative w-full h-[450svh] bg-[#121110]"
       aria-label="Walkthrough Architectural Image Sequence"
