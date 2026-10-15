@@ -20,9 +20,9 @@ export function ServicesSection() {
         <p className="text-[11px] tracking-[0.24em] uppercase font-light text-[#736E67] mb-4">
           02 / SERVICES
         </p>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight max-w-3xl">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight max-w-3xl">
           One vision, inside and out
-        </h2>
+        </h1>
         <p className="mt-6 max-w-2xl text-[15px] font-light leading-relaxed text-[#736E67]">
           A well-designed space should feel connected: the way you arrive, move through its rooms and step into the
           landscape beyond. We consider architecture, interiors and outdoor spaces together, creating a consistent

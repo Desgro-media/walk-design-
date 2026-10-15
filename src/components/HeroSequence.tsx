@@ -118,6 +118,7 @@ export function HeroSequence() {
       className="relative w-full h-[450svh] bg-[#121110]"
       aria-label="Walkthrough Architectural Image Sequence"
     >
+      <h1 className="sr-only">Walk In Design — architecture, interior design and landscape design in Qatar and India</h1>
       {/* Sticky Full-Viewport Viewport (100vh) */}
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden select-none">
         {heroImages.map((image, index) => (
