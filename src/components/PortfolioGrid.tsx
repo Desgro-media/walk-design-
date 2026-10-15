@@ -54,7 +54,7 @@ export function PortfolioGrid() {
   return (
     <section
       id="projects"
-      className="relative w-full bg-[#FAF8F5] pt-16 sm:pt-20 pb-28 sm:pb-36 px-6 sm:px-10 md:px-14 lg:px-20 border-b border-[#1A1A1A]/8 [font-family:var(--font-work-sans),sans-serif]"
+      className="relative w-full bg-[#FAF8F5] py-28 sm:py-36 px-6 sm:px-10 md:px-14 lg:px-20 border-b border-[#1A1A1A]/8 [font-family:var(--font-work-sans),sans-serif]"
     >
       <div className="max-w-6xl mx-auto">
         <p className="text-[13px] tracking-[0.24em] uppercase font-light mb-4" style={{ color: META }}>

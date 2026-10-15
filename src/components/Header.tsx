@@ -12,8 +12,8 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
-  // Pages with a hero/banner photo ([data-hero]) get a transparent header over it; others are always solid
-  const hasHero = pathname === "/" || pathname === "/projects" || pathname === "/services";
+  // Only the home page has a hero photo ([data-hero]); inner pages always get the solid white header
+  const hasHero = pathname === "/";
   const isPastHero = !hasHero || scrolledPastHero || isMobileMenuOpen;
 
   useEffect(() => {
