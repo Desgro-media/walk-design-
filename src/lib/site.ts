@@ -1,6 +1,6 @@
 // Single source of truth for SEO: change the domain/contact details here.
 // Set NEXT_PUBLIC_SITE_URL (e.g. https://www.yourdomain.com) in the hosting environment once you have a custom domain.
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://walk-in-design.vercel.app").replace(/\/$/, "");
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.walkndesign.com").replace(/\/$/, "");
 
 export const site = {
   name: "Walk In Design",
