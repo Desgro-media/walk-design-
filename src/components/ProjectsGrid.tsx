@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { projectsData, Project } from "@/data/projects";
+import { useProjects } from "@/context/ProjectsContext";
 import { useLanguage } from "@/context/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +15,7 @@ export function ProjectsGrid() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const tilesRef = useRef<(HTMLDivElement | null)[]>([]);
 
+  const projectsData = useProjects();
   const filteredProjects = projectsData.filter((p) => {
     if (activeFilter === "all") return true;
     return p.categoryKey === activeFilter;

@@ -3,23 +3,22 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
-import { projectsData } from "@/data/projects";
-
-// One tile per interior project, using its cover photo
-const interiorDetails = projectsData
-  .filter((p) => p.categoryKey === "interior")
-  .map((p) => ({
-    id: p.id,
-    titleEn: p.title,
-    titleEs: p.titleEs,
-    subEn: p.location,
-    subEs: p.locationEs,
-    image: p.image,
-  }));
+import { useProjects } from "@/context/ProjectsContext";
 
 export function InteriorStrip() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { language, t } = useLanguage();
+  // One tile per interior project, using its cover photo
+  const interiorDetails = useProjects()
+    .filter((p) => p.categoryKey === "interior")
+    .map((p) => ({
+      id: p.id,
+      titleEn: p.title,
+      titleEs: p.titleEs,
+      subEn: p.location,
+      subEs: p.locationEs,
+      image: p.image,
+    }));
   const [isDragging, setIsDragging] = useState(false);
   const drag = useRef({ startX: 0, startLeft: 0, moved: false });
 

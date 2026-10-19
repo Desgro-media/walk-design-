@@ -1,4 +1,5 @@
 import { buildSystemPrompt } from "@/lib/chatKnowledge";
+import { getProjects } from "@/lib/projects";
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-flash-lite-latest";
 const MAX_MESSAGES = 12;
@@ -60,7 +61,7 @@ export async function POST(request: Request) {
 
   try {
     const payload = JSON.stringify({
-      systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
+      systemInstruction: { parts: [{ text: buildSystemPrompt(await getProjects()) }] },
       contents: messages.map((m) => ({
         role: m.role === "assistant" ? "model" : "user",
         parts: [{ text: m.content }],

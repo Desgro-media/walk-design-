@@ -1,14 +1,14 @@
 import { approach, founders, process, services } from "@/data/studio";
-import { projectsData } from "@/data/projects";
+import type { Project } from "@/data/projects";
 
 // Everything the chatbot is allowed to know, built from the same data the website uses.
-function projectSummary() {
+function projectSummary(projectsData: Project[]) {
   return projectsData
     .map((p) => `[${p.id}] ${p.title} — ${p.category}, ${p.location}.${p.brief ? " " + p.brief : ""}`)
     .join("\n");
 }
 
-export function buildSystemPrompt() {
+export function buildSystemPrompt(projectsData: Project[]) {
   const serviceText = services
     .map(
       (s) =>
@@ -44,7 +44,7 @@ FOUNDERS
 ${founders.map((f) => `${f.name} — ${f.role} (${f.creds}). ${f.bio[0]}`).join("\n")}
 
 SELECTED WORK (${projectsData.length} projects on the Projects page; the id is in square brackets)
-${projectSummary()}
+${projectSummary(projectsData)}
 
 CONTACT
 Qatar office: West Bay, Qatar. Phone / WhatsApp: +974 51753798, +974 51753799.

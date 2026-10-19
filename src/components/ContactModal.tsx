@@ -8,6 +8,7 @@ export function ContactModal() {
   const { isContactModalOpen, setIsContactModalOpen, language, t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,6 +18,7 @@ export function ContactModal() {
     service: "Architecture",
     scope: "",
     message: "",
+    website: "", // honeypot
   });
 
   useEffect(() => {
@@ -31,14 +33,24 @@ export function ContactModal() {
 
   if (!isContactModalOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate high-end submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setError("");
+    try {
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
       setIsSuccess(true);
-    }, 900);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -210,11 +222,28 @@ export function ContactModal() {
                 />
               </div>
 
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={formData.website}
+                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                className="absolute left-[-9999px] h-0 w-0 opacity-0"
+              />
+
               <p className="text-[11px] font-light text-[#736E67] leading-relaxed">
                 {language === "EN"
                   ? "We will use the details you submit to respond to your enquiry. Please read our Privacy Policy for information about how we handle personal data."
                   : "Utilizaremos los datos que nos facilite para responder a su consulta."}
               </p>
+
+              {error && (
+                <p role="alert" className="text-[13px] font-light text-[#9B2C2C]">
+                  {error}
+                </p>
+              )}
 
               <div className="pt-4">
                 <button

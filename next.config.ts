@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      // Photos uploaded through the admin live in Vercel Blob
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },
   turbopack: {

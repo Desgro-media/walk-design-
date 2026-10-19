@@ -4,7 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { MessageCircle, Send, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import { projectsData } from "@/data/projects";
+import type { Project } from "@/data/projects";
+import { useProjects } from "@/context/ProjectsContext";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -15,7 +16,7 @@ const GREETING: Msg = {
 
 // The model may end a reply with [[project:ID]] tags; show those as photo cards (known ids only, max 3)
 const TAG = /\[\[(?:project:)?([a-z0-9-]+)\]\]/g;
-function parseReply(content: string) {
+function parseReply(content: string, projectsData: Project[]) {
   const ids: string[] = [];
   const text = content
     .replace(TAG, (_, id: string) => {
@@ -30,6 +31,7 @@ const SUGGESTIONS = ["What services do you offer?", "How does your process work?
 
 export function ChatBot() {
   const { setIsContactModalOpen, setSelectedProjectId } = useLanguage();
+  const projectsData = useProjects();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([GREETING]);
   const [input, setInput] = useState("");
@@ -93,7 +95,7 @@ export function ChatBot() {
 
           <div ref={scrollRef} data-lenis-prevent className="flex-1 overflow-y-auto px-4 py-4 space-y-3 text-[13.5px] font-light leading-relaxed">
             {messages.map((m, i) => {
-              const { text, projects } = m.role === "assistant" ? parseReply(m.content) : { text: m.content, projects: [] };
+              const { text, projects } = m.role === "assistant" ? parseReply(m.content, projectsData) : { text: m.content, projects: [] };
               return (
                 <div key={i} className={m.role === "user" ? "flex justify-end" : "flex flex-col items-start gap-2"}>
                   <p

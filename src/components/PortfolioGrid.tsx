@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { projectsData, Project } from "@/data/projects";
+import type { Project } from "@/data/projects";
+import { useProjects } from "@/context/ProjectsContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { Tilt } from "@/components/Tilt";
 import { Reveal3D } from "@/components/Reveal3D";
@@ -46,6 +47,7 @@ export function PortfolioGrid() {
   const [view, setView] = useState<View>("grid");
   const en = language === "EN";
 
+  const projectsData = useProjects();
   const items = projectsData.filter((p) => filter === "all" || p.categoryKey === filter);
   const open = (p: Project) => {
     if (!p.comingSoon) setSelectedProjectId(p.id);

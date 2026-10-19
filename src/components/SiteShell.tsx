@@ -4,6 +4,8 @@ import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { ProjectsProvider } from "@/context/ProjectsContext";
+import type { Project } from "@/data/projects";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProjectModal } from "@/components/ProjectModal";
@@ -21,8 +23,13 @@ function ScrollToTopOnRoute() {
   return null;
 }
 
-export function SiteShell({ children }: { children: React.ReactNode }) {
+export function SiteShell({ children, projects }: { children: React.ReactNode; projects: Project[] }) {
+  const pathname = usePathname();
+  // The admin panel has its own chrome: no site header, footer, loader or chatbot
+  if (pathname?.startsWith("/admin")) return <>{children}</>;
+
   return (
+    <ProjectsProvider projects={projects}>
     <LanguageProvider>
       <SmoothScroll>
         <SiteLoader />
@@ -38,5 +45,6 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         </div>
       </SmoothScroll>
     </LanguageProvider>
+    </ProjectsProvider>
   );
 }

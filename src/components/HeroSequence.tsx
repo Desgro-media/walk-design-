@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/context/LanguageContext";
-import { projectsData } from "@/data/projects";
+import type { Project } from "@/data/projects";
+import { useProjects } from "@/context/ProjectsContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,19 +22,27 @@ const HERO_PICKS: [string, number, number][] = [
   ["interior-02-al-rayyan-qatar", 0, 50],
 ];
 
-const heroImages = HERO_PICKS.map(([id, photo, focus], i) => {
-  const project = projectsData.find((p) => p.id === id);
-  if (!project) throw new Error(`Hero project not found: ${id}`);
-  const n = `${String(i + 1).padStart(2, "0")} / ${String(HERO_PICKS.length).padStart(2, "0")}`;
-  const label = `${n} — ${project.category} · ${project.location}`.toUpperCase();
-  return {
-    src: project.gallery[photo].src,
-    focus,
-    alt: `${project.title}, ${project.location}`,
-    roomEn: label,
-    roomEs: `${n} — ${project.categoryEs} · ${project.locationEs}`.toUpperCase(),
-  };
-});
+function buildHeroImages(projects: Project[]) {
+  const picks = HERO_PICKS.flatMap(([id, photo, focus]) => {
+    const project = projects.find((p) => p.id === id);
+    const src = project?.gallery[photo]?.src;
+    return project && src ? [{ project, src, focus }] : [];
+  });
+  // If the admin removed the curated projects, fall back to the first projects' cover photos
+  const chosen = picks.length >= 2
+    ? picks
+    : projects.filter((p) => p.gallery[0]).slice(0, 7).map((project) => ({ project, src: project.gallery[0].src, focus: 50 }));
+  return chosen.map(({ project, src, focus }, i) => {
+    const n = `${String(i + 1).padStart(2, "0")} / ${String(chosen.length).padStart(2, "0")}`;
+    return {
+      src,
+      focus,
+      alt: `${project.title}, ${project.location}`,
+      roomEn: `${n} — ${project.category} · ${project.location}`.toUpperCase(),
+      roomEs: `${n} — ${project.categoryEs} · ${project.locationEs}`.toUpperCase(),
+    };
+  });
+}
 
 export function HeroSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,9 +50,11 @@ export function HeroSequence() {
   const imageInnerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeRoomIndex, setActiveRoomIndex] = useState(0);
   const { language, t } = useLanguage();
+  const projects = useProjects();
+  const heroImages = useMemo(() => buildHeroImages(projects), [projects]);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || heroImages.length < 2) return;
 
     const ctx = gsap.context(() => {
       const slides = slidesRef.current.filter(Boolean) as HTMLDivElement[];
@@ -108,7 +119,7 @@ export function HeroSequence() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [heroImages.length]);
 
   return (
     <section

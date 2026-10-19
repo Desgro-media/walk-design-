@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteShell } from "@/components/SiteShell";
 import { JsonLd } from "@/components/JsonLd";
 import { site, siteUrl } from "@/lib/site";
+import { getProjects } from "@/lib/projects";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,11 +57,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const projects = await getProjects();
   return (
     <html
       lang="en"
@@ -68,7 +70,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#F4F1EC] text-[#1A1A1A]">
         <JsonLd />
-        <SiteShell>{children}</SiteShell>
+        <SiteShell projects={projects}>{children}</SiteShell>
       </body>
     </html>
   );

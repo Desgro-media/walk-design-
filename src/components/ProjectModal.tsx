@@ -3,11 +3,12 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
-import { projectsData } from "@/data/projects";
+import { useProjects } from "@/context/ProjectsContext";
 
 export function ProjectModal() {
   const { selectedProjectId, setSelectedProjectId, language, t } = useLanguage();
 
+  const projectsData = useProjects();
   const project = projectsData.find((p) => p.id === selectedProjectId);
 
   useEffect(() => {
