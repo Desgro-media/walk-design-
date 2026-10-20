@@ -11,26 +11,37 @@ export function Header() {
   const { language, t, setIsContactModalOpen, setIsStudioModalOpen } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const [scrolledPastHero, setScrolledPastHero] = useState(false);
+  // Remembered per page, so an answer from another page can never leave a white header over the home hero
+  const [past, setPast] = useState({ path: "", value: false });
   // Only the home page has a hero photo ([data-hero]); inner pages always get the solid white header
   const hasHero = pathname === "/";
+  const scrolledPastHero = past.path === pathname && past.value;
   const isPastHero = !hasHero || scrolledPastHero || isMobileMenuOpen;
 
   useEffect(() => {
     if (!hasHero) return;
-    const handleScroll = () => {
-      const heroElement = document.querySelector("[data-hero]");
-      // Past the hero once its bottom is near the top of the viewport
-      setScrolledPastHero(heroElement ? heroElement.getBoundingClientRect().bottom <= 80 : true);
+    const measure = () => {
+      const hero = document.querySelector<HTMLElement>("[data-hero]");
+      // Hero not mounted or not laid out yet: stay transparent instead of guessing "scrolled past".
+      // Near the top of the page the header can never be "past the hero", whatever else is going on.
+      const value =
+        !!hero && window.scrollY > 120 && hero.offsetHeight > window.innerHeight && hero.getBoundingClientRect().bottom <= 80;
+      setPast((p) => (p.path === pathname && p.value === value ? p : { path: pathname, value }));
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    // the new page's hero may mount just after the route changes
-    const t = window.setTimeout(handleScroll, 150);
+    measure();
+    window.addEventListener("scroll", measure, { passive: true });
+    window.addEventListener("resize", measure);
+    window.addEventListener("pageshow", measure); // back/forward restore
+    // layout, fonts and images can settle after the page loads: keep re-checking for a moment
+    const poll = window.setInterval(measure, 250);
+    const stop = window.setTimeout(() => window.clearInterval(poll), 3000);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.clearTimeout(t);
+      window.removeEventListener("scroll", measure);
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("pageshow", measure);
+      window.clearInterval(poll);
+      window.clearTimeout(stop);
     };
   }, [hasHero, pathname]);
 
