@@ -6,6 +6,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ProjectsProvider } from "@/context/ProjectsContext";
 import type { Project } from "@/data/projects";
+import type { Owner } from "@/lib/admin/owners";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProjectModal } from "@/components/ProjectModal";
@@ -25,13 +26,13 @@ function ScrollToTopOnRoute() {
 
 type ServiceImages = Record<string, { src: string; alt: string }[]>;
 
-export function SiteShell({ children, projects, serviceImages }: { children: React.ReactNode; projects: Project[]; serviceImages: ServiceImages }) {
+export function SiteShell({ children, projects, serviceImages, owners }: { children: React.ReactNode; projects: Project[]; serviceImages: ServiceImages; owners: Owner[] }) {
   const pathname = usePathname();
   // The admin panel has its own chrome: no site header, footer, loader or chatbot
   if (pathname?.startsWith("/admin")) return <>{children}</>;
 
   return (
-    <ProjectsProvider projects={projects} serviceImages={serviceImages}>
+    <ProjectsProvider projects={projects} serviceImages={serviceImages} owners={owners}>
     <LanguageProvider>
       <SmoothScroll>
         <SiteLoader />

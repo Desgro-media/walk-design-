@@ -9,6 +9,7 @@ import { SESSION_COOKIE, SESSION_MAX_AGE, createSessionToken, passwordMatches } 
 import { PROJECTS_TAG, sql } from "./db";
 import { SERVICE_IMAGES_KEY, validPhotoSrc, type ServiceImage } from "./photos";
 import { services } from "@/data/studio";
+import { OWNERS_ENABLED_KEY, OWNERS_ITEMS_KEY, type Owner } from "./owners";
 import { CATEGORIES, LEAD_STATUSES, type ActionResult, type CategoryKey, type ProjectInput } from "./types";
 
 const str = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -272,5 +273,42 @@ export async function saveServiceImages(serviceId: string, images: ServiceImage[
   }
   refreshSite();
   revalidatePath("/admin/services");
+  return { ok: true };
+}
+
+// ---------- Owners / founders shown on the website ----------
+
+// Master switch: off removes the owners' names, photos and details from the whole website; on brings them back
+export async function setOwnersEnabled(enabled: boolean) {
+  await requireAdmin();
+  await sql()`
+    insert into site_settings (key, value) values (${OWNERS_ENABLED_KEY}, ${JSON.stringify(enabled === true)}::jsonb)
+    on conflict (key) do update set value = excluded.value, updated_at = now()`;
+  refreshSite();
+  revalidatePath("/admin/owners");
+}
+
+export async function saveOwners(items: Owner[]): Promise<ActionResult> {
+  await requireAdmin();
+  const clean = (Array.isArray(items) ? items : []).slice(0, 24).map((o) => ({
+    id: str(o?.id, 60) || crypto.randomUUID(),
+    name: str(o?.name, 120),
+    role: str(o?.role, 120),
+    creds: str(o?.creds, 200),
+    photo: str(o?.photo, 500),
+    bio: (Array.isArray(o?.bio) ? o.bio : []).map((p) => str(p, 2000)).filter(Boolean).slice(0, 10),
+    ...(o?.hidden ? { hidden: true } : {}),
+  }));
+  if (clean.some((o) => !o.name)) return fail("Every person needs a name.");
+  if (clean.some((o) => o.photo && !validPhotoSrc(o.photo))) return fail("One of the photos has an invalid address. Re-upload it.");
+  try {
+    await sql()`
+      insert into site_settings (key, value) values (${OWNERS_ITEMS_KEY}, ${JSON.stringify(clean)}::jsonb)
+      on conflict (key) do update set value = excluded.value, updated_at = now()`;
+  } catch (e) {
+    return fail(e instanceof Error ? e.message : "Could not save.");
+  }
+  refreshSite();
+  revalidatePath("/admin/owners");
   return { ok: true };
 }

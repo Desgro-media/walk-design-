@@ -2,27 +2,10 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { uploadImage } from "./upload";
 import { btnGhost, input } from "./ui";
 
 export type ManagedPhoto = { src: string; w?: number; h?: number; alt?: string; hidden?: boolean };
-
-const MAX_EDGE = 2400;
-
-// Shrink big phone/camera photos before upload: faster, cheaper, and the site loads quicker
-async function prepare(file: File): Promise<{ blob: Blob; w: number; h: number }> {
-  const bmp = await createImageBitmap(file);
-  const scale = Math.min(1, MAX_EDGE / Math.max(bmp.width, bmp.height));
-  const w = Math.round(bmp.width * scale);
-  const h = Math.round(bmp.height * scale);
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  canvas.getContext("2d")!.drawImage(bmp, 0, 0, w, h);
-  bmp.close();
-  const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/webp", 0.86));
-  if (!blob) throw new Error(`Could not read ${file.name}`);
-  return { blob, w, h };
-}
 
 interface Props {
   photos: ManagedPhoto[];
@@ -47,16 +30,10 @@ export function PhotoManager({ photos, onChange, folder, withAlt, coverLabel, bu
     setUploading(true);
     busyChange?.(true);
     try {
-      const prepared = await Promise.all(Array.from(files).filter((f) => f.type.startsWith("image/")).map(prepare));
       const added: ManagedPhoto[] = [];
-      for (const p of prepared) {
-        const body = new FormData();
-        body.append("file", new File([p.blob], "photo.webp", { type: "image/webp" }));
-        body.append("folder", folder);
-        const res = await fetch("/api/admin/upload", { method: "POST", body });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.error || "Upload failed");
-        added.push({ src: data.url, w: p.w, h: p.h, ...(withAlt ? { alt: "" } : {}) });
+      for (const f of Array.from(files).filter((f) => f.type.startsWith("image/"))) {
+        const { url, w, h } = await uploadImage(f, folder);
+        added.push({ src: url, w, h, ...(withAlt ? { alt: "" } : {}) });
       }
       onChange([...photos, ...added]);
     } catch (e) {

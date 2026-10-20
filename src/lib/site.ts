@@ -6,15 +6,9 @@ export const site = {
   name: "Walk In Design",
   legalName: "Walk In Design Studio",
   tagline: "Architecture, Interiors & Landscape",
-  description:
-    "Walk In Design is an architecture, interior design and landscape design studio in Qatar and India, founded by Ar. Mohamed Ramshad and Ar. Rajeena. Private villas, cultural buildings and commercial interiors, designed as one connected whole.",
   founded: "2025",
   ogImage: "/images/projects/architecture/architecture-01-lusail-qatar/01.webp",
   logo: "/apple-icon.png",
-  founders: [
-    { name: "Ar. Mohamed Ramshad", jobTitle: "Co-Founder & CEO" },
-    { name: "Ar. Rajeena", jobTitle: "Co-Founder & Design Director" },
-  ],
   offices: [
     { name: "Walk In Design — Qatar", locality: "West Bay", region: "Doha", country: "QA", phones: ["+97451753798", "+97451753799"] },
     { name: "Walk In Design — India", locality: "Tirur", region: "Malappuram, Kerala", country: "IN", phones: ["+919747397043", "+918330095919"] },
@@ -33,5 +27,9 @@ export const site = {
     "Walk In Design",
   ],
 };
+
+// The founders' names are only mentioned while the admin has the owners switched on
+export const siteDescription = (founderNames?: string) =>
+  `Walk In Design is an architecture, interior design and landscape design studio in Qatar and India${founderNames ? `, founded by ${founderNames}` : ""}. Private villas, cultural buildings and commercial interiors, designed as one connected whole.`;
 
 export const absoluteUrl = (path = "/") => `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
