@@ -6,6 +6,7 @@ import { projectsData } from "@/data/projects";
 import { btn, btnGhost, card } from "@/components/admin/ui";
 import { MoveButtons } from "@/components/admin/MoveButtons";
 import { DeleteProjectButton } from "@/components/admin/DeleteProjectButton";
+import { VisibilityButton } from "@/components/admin/VisibilityButton";
 
 export default async function ProjectsPage() {
   const rows = await getAdminProjects();
@@ -42,6 +43,7 @@ export default async function ProjectsPage() {
                   {p.comingSoon && <span className="ml-2">· coming soon</span>}
                 </p>
               </div>
+              <VisibilityButton id={p.id} published={published} />
               <MoveButtons id={p.id} first={i === 0} last={i === rows.length - 1} />
               <Link href={`/admin/projects/${p.id}`} className={btnGhost}>Edit</Link>
               <DeleteProjectButton id={p.id} title={p.title} />

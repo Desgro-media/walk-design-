@@ -1,36 +1,15 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import Image from "next/image";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { Project } from "@/data/projects";
 import { deleteProject, saveProject } from "@/lib/admin/actions";
 import { CATEGORIES, type CategoryKey, type ProjectInput } from "@/lib/admin/types";
-import { btn, btnDanger, btnGhost, card, input, label } from "./ui";
-
-type Photo = { src: string; w: number; h: number };
-
-const MAX_EDGE = 2400;
-
-// Shrink big phone/camera photos before upload: faster, cheaper, and the site loads quicker
-async function prepare(file: File): Promise<{ blob: Blob; w: number; h: number }> {
-  const bmp = await createImageBitmap(file);
-  const scale = Math.min(1, MAX_EDGE / Math.max(bmp.width, bmp.height));
-  const w = Math.round(bmp.width * scale);
-  const h = Math.round(bmp.height * scale);
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  canvas.getContext("2d")!.drawImage(bmp, 0, 0, w, h);
-  bmp.close();
-  const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/webp", 0.86));
-  if (!blob) throw new Error(`Could not read ${file.name}`);
-  return { blob, w, h };
-}
+import { PhotoManager, type ManagedPhoto } from "./PhotoManager";
+import { btn, btnDanger, card, input, label } from "./ui";
 
 export function ProjectEditor({ project, published = true }: { project?: Project; published?: boolean }) {
   const router = useRouter();
-  const fileRef = useRef<HTMLInputElement>(null);
   const [saving, startSave] = useTransition();
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -48,7 +27,7 @@ export function ProjectEditor({ project, published = true }: { project?: Project
     comingSoon: project?.comingSoon ?? false,
     published,
   });
-  const [gallery, setGallery] = useState<Photo[]>(project?.gallery ?? []);
+  const [gallery, setGallery] = useState<ManagedPhoto[]>(project?.gallery ?? []);
 
   // New projects get an id on first save; photos go in a folder named after it (or a temp one before that)
   const [folder] = useState(() => project?.id ?? `new-${Math.random().toString(36).slice(2, 8)}`);
@@ -58,48 +37,15 @@ export function ProjectEditor({ project, published = true }: { project?: Project
     setSaved(false);
   };
 
-  async function onFiles(files: FileList | null) {
-    if (!files?.length) return;
-    setError("");
-    setUploading(true);
-    try {
-      const list = Array.from(files).filter((f) => f.type.startsWith("image/"));
-      const prepared = await Promise.all(list.map(prepare));
-      const added: Photo[] = [];
-      for (const p of prepared) {
-        const body = new FormData();
-        body.append("file", new File([p.blob], "photo.webp", { type: "image/webp" }));
-        body.append("folder", folder);
-        const res = await fetch("/api/admin/upload", { method: "POST", body });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.error || "Upload failed");
-        added.push({ src: data.url, w: p.w, h: p.h });
-      }
-      setGallery((g) => [...g, ...added]);
-      setSaved(false);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Upload failed");
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  }
-
-  const move = (i: number, to: number) => {
-    if (to < 0 || to >= gallery.length) return;
-    setGallery((g) => {
-      const next = [...g];
-      [next[i], next[to]] = [next[to], next[i]];
-      return next;
-    });
-    setSaved(false);
-  };
-
   function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     startSave(async () => {
-      const input: ProjectInput = { id: project?.id, ...form, gallery };
+      const input: ProjectInput = {
+        id: project?.id,
+        ...form,
+        gallery: gallery.map((g) => ({ src: g.src, w: g.w ?? 1600, h: g.h ?? 900, hidden: g.hidden })),
+      };
       const res = await saveProject(input);
       if (!res.ok) return setError(res.error);
       setSaved(true);
@@ -162,41 +108,17 @@ export function ProjectEditor({ project, published = true }: { project?: Project
       </section>
 
       <section className={`${card} p-5 sm:p-6 space-y-4`}>
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-[11px] tracking-[0.2em] uppercase text-[#736E67]">Photos ({gallery.length})</h2>
-            <p className="text-[12px] text-[#736E67] mt-1">The first photo is the cover. Large photos are resized automatically.</p>
-          </div>
-          <button type="button" disabled={uploading} onClick={() => fileRef.current?.click()} className={btnGhost}>
-            {uploading ? "Uploading…" : "+ Add photos"}
-          </button>
-          <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => onFiles(e.target.files)} />
+        <div>
+          <h2 className="text-[11px] tracking-[0.2em] uppercase text-[#736E67]">Photos</h2>
+          <p className="text-[12px] text-[#736E67] mt-1">The first visible photo is the cover. Hidden photos stay here but are not shown on the website.</p>
         </div>
-
-        {gallery.length === 0 ? (
-          <p className="text-[14px] text-[#736E67] border border-dashed border-[#1A1A1A]/20 p-8 text-center">No photos yet.</p>
-        ) : (
-          <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {gallery.map((g, i) => (
-              <li key={g.src} className="border border-[#1A1A1A]/10">
-                <div className="relative aspect-[4/3] bg-[#EBE6DF]">
-                  <Image src={g.src} alt="" fill sizes="240px" className="object-cover" />
-                  {i === 0 && <span className="absolute top-2 left-2 bg-[#1A1A1A] text-white text-[9px] tracking-[0.18em] uppercase px-2 py-1">Cover</span>}
-                </div>
-                <div className="flex items-center justify-between p-1.5 text-[12px]">
-                  <span className="flex gap-1">
-                    <button type="button" aria-label="Move earlier" disabled={i === 0} onClick={() => move(i, i - 1)} className="w-7 h-7 border border-[#1A1A1A]/20 disabled:opacity-30 cursor-pointer">←</button>
-                    <button type="button" aria-label="Move later" disabled={i === gallery.length - 1} onClick={() => move(i, i + 1)} className="w-7 h-7 border border-[#1A1A1A]/20 disabled:opacity-30 cursor-pointer">→</button>
-                  </span>
-                  <span className="flex gap-2">
-                    {i > 0 && <button type="button" onClick={() => move(i, 0)} className="underline cursor-pointer">Make cover</button>}
-                    <button type="button" onClick={() => { setGallery((x) => x.filter((_, j) => j !== i)); setSaved(false); }} className="text-[#9B2C2C] underline cursor-pointer">Remove</button>
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+        <PhotoManager
+          photos={gallery}
+          onChange={(g) => { setGallery(g); setSaved(false); }}
+          folder={folder}
+          coverLabel
+          busyChange={setUploading}
+        />
       </section>
 
       {error && <p role="alert" className="text-[13px] text-[#9B2C2C]">{error}</p>}

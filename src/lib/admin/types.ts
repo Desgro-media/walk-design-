@@ -54,7 +54,7 @@ export interface ProjectInput {
   materials: string;
   comingSoon: boolean;
   published: boolean;
-  gallery: { src: string; w: number; h: number }[];
+  gallery: { src: string; w: number; h: number; hidden?: boolean }[];
 }
 
 export type ActionResult = { ok: true; id?: string } | { ok: false; error: string };

@@ -23,13 +23,15 @@ function ScrollToTopOnRoute() {
   return null;
 }
 
-export function SiteShell({ children, projects }: { children: React.ReactNode; projects: Project[] }) {
+type ServiceImages = Record<string, { src: string; alt: string }[]>;
+
+export function SiteShell({ children, projects, serviceImages }: { children: React.ReactNode; projects: Project[]; serviceImages: ServiceImages }) {
   const pathname = usePathname();
   // The admin panel has its own chrome: no site header, footer, loader or chatbot
   if (pathname?.startsWith("/admin")) return <>{children}</>;
 
   return (
-    <ProjectsProvider projects={projects}>
+    <ProjectsProvider projects={projects} serviceImages={serviceImages}>
     <LanguageProvider>
       <SmoothScroll>
         <SiteLoader />

@@ -5,6 +5,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { JsonLd } from "@/components/JsonLd";
 import { site, siteUrl } from "@/lib/site";
 import { getProjects } from "@/lib/projects";
+import { getServiceImages } from "@/lib/serviceImages";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,7 +63,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const projects = await getProjects();
+  const [projects, serviceImages] = await Promise.all([getProjects(), getServiceImages()]);
   return (
     <html
       lang="en"
@@ -70,7 +71,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#F4F1EC] text-[#1A1A1A]">
         <JsonLd />
-        <SiteShell projects={projects}>{children}</SiteShell>
+        <SiteShell projects={projects} serviceImages={serviceImages}>{children}</SiteShell>
       </body>
     </html>
   );

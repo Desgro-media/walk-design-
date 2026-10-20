@@ -7,6 +7,8 @@ import { projectsData, type Project } from "@/data/projects";
 import { requireAdmin } from "./auth";
 import { SESSION_COOKIE, SESSION_MAX_AGE, createSessionToken, passwordMatches } from "./session";
 import { PROJECTS_TAG, sql } from "./db";
+import { SERVICE_IMAGES_KEY, validPhotoSrc, type ServiceImage } from "./photos";
+import { services } from "@/data/studio";
 import { CATEGORIES, LEAD_STATUSES, type ActionResult, type CategoryKey, type ProjectInput } from "./types";
 
 const str = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -56,11 +58,6 @@ function refreshSite() {
 const slug = (s: string) =>
   s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "project";
 
-// Photos are either bundled with the site, uploaded to Vercel Blob, or (local dev only) saved under /uploads
-function validSrc(src: string) {
-  return src.startsWith("/images/") || src.startsWith("/uploads/") || /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//.test(src);
-}
-
 export async function saveProject(input: ProjectInput): Promise<ActionResult> {
   await requireAdmin();
   const title = str(input.title, 120);
@@ -71,9 +68,12 @@ export async function saveProject(input: ProjectInput): Promise<ActionResult> {
     src: str(g?.src, 500),
     w: Math.round(Number(g?.w)) || 1600,
     h: Math.round(Number(g?.h)) || 900,
+    ...(g?.hidden ? { hidden: true } : {}),
   }));
   if (!gallery.length) return fail("Add at least one photo (the first one is the cover).");
-  if (gallery.some((g) => !validSrc(g.src))) return fail("One of the photos has an invalid address. Re-upload it.");
+  if (gallery.some((g) => !validPhotoSrc(g.src))) return fail("One of the photos has an invalid address. Re-upload it.");
+  const firstShown = gallery.find((g) => !g.hidden);
+  if (!firstShown) return fail("At least one photo must be visible. To hide the whole project, untick “Show on the website”.");
 
   const categoryKey = input.categoryKey as CategoryKey;
   const id = input.id || `${categoryKey}-${slug(title)}-${Math.random().toString(36).slice(2, 6)}`;
@@ -101,7 +101,7 @@ export async function saveProject(input: ProjectInput): Promise<ActionResult> {
     year: opt(input.year, 20),
     status,
     statusEs: status && es(status, old?.status, old?.statusEs),
-    image: gallery[0].src,
+    image: firstShown.src, // cover = first visible photo
     gallery,
     materials,
     materialsEs: materials && es(materials, old?.materials, old?.materialsEs),
@@ -239,4 +239,38 @@ export async function deleteClient(id: string) {
   await sql()`update leads set client_id = null where client_id = ${id}`;
   await sql()`delete from clients where id = ${id}`;
   redirect("/admin/clients");
+}
+
+// ---------- Project visibility (quick toggle from the list) ----------
+
+export async function setProjectPublished(id: string, published: boolean) {
+  await requireAdmin();
+  await sql()`update projects set published = ${published}, updated_at = now() where id = ${id}`;
+  refreshSite();
+  revalidatePath("/admin/projects");
+}
+
+// ---------- Service page photos ----------
+
+export async function saveServiceImages(serviceId: string, images: ServiceImage[]): Promise<ActionResult> {
+  await requireAdmin();
+  if (!services.some((s) => s.id === serviceId)) return fail("Unknown service.");
+  const clean = (Array.isArray(images) ? images : []).slice(0, 40).map((i) => ({
+    src: str(i?.src, 500),
+    alt: str(i?.alt, 200),
+    ...(i?.hidden ? { hidden: true } : {}),
+  }));
+  if (clean.some((i) => !validPhotoSrc(i.src))) return fail("One of the photos has an invalid address. Re-upload it.");
+  if (clean.length && clean.every((i) => i.hidden)) return fail("Show at least one photo, or the service page will have an empty strip.");
+  try {
+    // Merge into the single settings row so the other services keep their photos
+    await sql()`
+      insert into site_settings (key, value) values (${SERVICE_IMAGES_KEY}, ${JSON.stringify({ [serviceId]: clean })}::jsonb)
+      on conflict (key) do update set value = site_settings.value || excluded.value, updated_at = now()`;
+  } catch (e) {
+    return fail(e instanceof Error ? e.message : "Could not save.");
+  }
+  refreshSite();
+  revalidatePath("/admin/services");
+  return { ok: true };
 }
