@@ -2,6 +2,7 @@ export interface GalleryImage {
   src: string;
   w: number;
   h: number;
+  hidden?: boolean; // hidden in the admin: kept, but not shown on the website
 }
 
 export interface Project {

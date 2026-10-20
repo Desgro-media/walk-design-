@@ -36,3 +36,10 @@ create table if not exists clients (
   project_ids text[] not null default '{}',
   notes text not null default ''
 );
+
+-- Small key/value store for site content edited in the admin (e.g. the photos on each service page)
+create table if not exists site_settings (
+  key text primary key,
+  value jsonb not null,
+  updated_at timestamptz not null default now()
+);

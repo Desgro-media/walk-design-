@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import { services, process } from "@/data/studio";
 import { useLanguage } from "@/context/LanguageContext";
 import { ImageRail } from "@/components/ImageRail";
+import { useServiceImages } from "@/context/ProjectsContext";
 import { Reveal3D } from "@/components/Reveal3D";
 
 export function ServicesSection() {
   const [activeId, setActiveId] = useState(services[0].id);
   const { setIsContactModalOpen } = useLanguage();
+  const serviceImages = useServiceImages();
   const active = services.find((s) => s.id === activeId) ?? services[0];
 
   return (
@@ -51,7 +53,7 @@ export function ServicesSection() {
 
         {/* Active service: a row of images */}
         <div className="mt-10" key={`rail-${active.id}`}>
-          <ImageRail images={active.images} />
+          <ImageRail images={serviceImages[active.id] ?? active.images} />
         </div>
 
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16" key={active.id}>
