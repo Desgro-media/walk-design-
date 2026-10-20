@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
+import { useOwners } from "@/context/ProjectsContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +14,7 @@ export function StudioIntro() {
   const textRef = useRef<HTMLParagraphElement>(null);
   const metaRef = useRef<HTMLDivElement>(null);
   const { t, setIsStudioModalOpen } = useLanguage();
+  const owners = useOwners(); // empty when the owners are switched off in the admin
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -128,14 +130,16 @@ export function StudioIntro() {
             </p>
           </div>
 
-          <div className="flex flex-col space-y-2">
-            <span className="text-[10px] tracking-[0.22em] uppercase font-light text-[#736E67]">
-              03 / {t.studioIntro.pill3Label}
-            </span>
-            <p className="text-[14px] sm:text-[15px] font-light leading-relaxed text-[#1A1A1A]">
-              {t.studioIntro.pill3Val}
-            </p>
-          </div>
+          {owners.length > 0 && (
+            <div className="flex flex-col space-y-2">
+              <span className="text-[10px] tracking-[0.22em] uppercase font-light text-[#736E67]">
+                03 / {t.studioIntro.pill3Label}
+              </span>
+              <p className="text-[14px] sm:text-[15px] font-light leading-relaxed text-[#1A1A1A]">
+                {owners.map((o) => o.name).join(" & ")}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -3,10 +3,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
-import { approach, founders, process } from "@/data/studio";
+import { approach, process } from "@/data/studio";
+import { useOwners } from "@/context/ProjectsContext";
+import { joinNames } from "@/lib/admin/owners";
 
 export function StudioModal() {
   const { isStudioModalOpen, setIsStudioModalOpen, language } = useLanguage();
+  // Empty when the admin has switched the owners off: then no name or photo is shown
+  const founders = useOwners();
   const panelRef = useRef<HTMLDivElement>(null);
   const founderRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Which founder is being read in the panel; its photo is shown large in the left area (wide screens)
@@ -60,7 +64,7 @@ export function StudioModal() {
 
   if (!isStudioModalOpen) return null;
 
-  const shown = founders[shownFounder];
+  const shown = founders[shownFounder] ?? founders[0];
 
   return (
     <div
@@ -70,6 +74,7 @@ export function StudioModal() {
       onClick={() => setIsStudioModalOpen(false)}
     >
       {/* Large founder photo in the space left of the panel (wide screens only) */}
+      {shown && (
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0 left-0 right-[48rem] hidden xl:flex items-center justify-center"
@@ -95,6 +100,7 @@ export function StudioModal() {
           </figure>
         </div>
       </div>
+      )}
 
       <div
         ref={panelRef}
@@ -124,9 +130,8 @@ export function StudioModal() {
             {language === "EN" ? (
               <>
                 <p>
-                  Established in Qatar in 2025, Walk In Design was founded by senior architects Mohamed Ramshad and
-                  Rajeena. The practice brings architecture, interior design and landscape design into a closely
-                  connected process, with the founders personally involved from early ideas through execution
+                  Established in Qatar in 2025, Walk In Design {founders.length ? `was founded by senior architects ${joinNames(founders, true)}. The practice brings` : "brings"} architecture, interior design and landscape design into a closely
+                  connected process, with {founders.length ? "the founders" : "senior architects"} personally involved from early ideas through execution
                   coordination.
                 </p>
                 <p>
@@ -142,7 +147,9 @@ export function StudioModal() {
               </>
             ) : (
               <p>
-                Fundado en Catar en 2025 por los arquitectos sénior Mohamed Ramshad y Rajeena, Walk In Design aúna
+                {founders.length
+                  ? `Fundado en Catar en 2025 por los arquitectos sénior ${joinNames(founders, true).replace(" and ", " y ")}, Walk In Design aúna`
+                  : "Fundado en Catar en 2025, Walk In Design aúna"}{" "}
                 arquitectura, interiorismo y paisajismo en un proceso estrechamente conectado.
               </p>
             )}
@@ -179,7 +186,8 @@ export function StudioModal() {
             </ul>
           </div>
 
-          {/* Founders */}
+          {/* Founders: only while the owners are switched on in the admin */}
+          {founders.length > 0 && (
           <div className="mt-12 space-y-12 border-t border-[#1A1A1A]/10 pt-8">
             <span className="text-[10px] tracking-[0.22em] uppercase font-light text-[#736E67] block">
               {language === "EN" ? "MEET THE FOUNDERS" : "CONOZCA A LOS FUNDADORES"}
@@ -213,6 +221,7 @@ export function StudioModal() {
               </div>
             ))}
           </div>
+          )}
 
           {/* Process */}
           <div className="mt-14 border-t border-[#1A1A1A]/10 pt-8">

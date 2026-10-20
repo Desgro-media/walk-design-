@@ -1,4 +1,5 @@
-import { approach, founders, process, services } from "@/data/studio";
+import { approach, process, services } from "@/data/studio";
+import { joinNames, type Owner } from "@/lib/admin/owners";
 import type { Project } from "@/data/projects";
 
 // Everything the chatbot is allowed to know, built from the same data the website uses.
@@ -8,7 +9,7 @@ function projectSummary(projectsData: Project[]) {
     .join("\n");
 }
 
-export function buildSystemPrompt(projectsData: Project[]) {
+export function buildSystemPrompt(projectsData: Project[], founders: Owner[]) {
   const serviceText = services
     .map(
       (s) =>
@@ -27,7 +28,7 @@ Rules:
 - SHOWING PHOTOS: the website can display a project's photo as a card in the chat. When the visitor asks to see work, photos, examples or a type of project (for example "show me villas", "any pool gardens?"), or when you talk about specific projects, finish your reply with up to 3 tags of the form [[project:ID]], using ONLY ids from the SELECTED WORK list (the text in square brackets). Pick the projects that best match the question. Put the tags on the last line, after your sentence(s). Never write URLs, file names or markdown images, and never mention the tags themselves.
 
 STUDIO
-Walk In Design — Architecture • Interiors • Landscape. Qatar & India. Founded 2025 by senior architects Ar. Mohamed Ramshad and Ar. Rajeena. The practice brings architecture, interior design and landscape design into one connected process, with the founders personally involved from early ideas through execution coordination. Specialises in residential villas, cultural buildings and commercial interiors across Qatar and the wider Middle East. Name: an invitation to walk into a space that feels right for you.
+Walk In Design — Architecture • Interiors • Landscape. Qatar & India. Founded 2025${founders.length ? ` by senior architects ${joinNames(founders)}` : ""}. The practice brings architecture, interior design and landscape design into one connected process, with the senior architects personally involved from early ideas through execution coordination. Specialises in residential villas, cultural buildings and commercial interiors across Qatar and the wider Middle East. Name: an invitation to walk into a space that feels right for you.
 Mission: to create thoughtful, functional and enduring spaces through personal collaboration, careful design and close attention to execution.
 Vision: to build a studio known for spaces that connect people, architecture and nature, and for a process clients can understand and participate in.
 
@@ -40,10 +41,7 @@ ${serviceText}
 PROCESS
 ${process.map((p) => `${p.n} ${p.title}: ${p.text}`).join("\n")}
 
-FOUNDERS
-${founders.map((f) => `${f.name} — ${f.role} (${f.creds}). ${f.bio[0]}`).join("\n")}
-
-SELECTED WORK (${projectsData.length} projects on the Projects page; the id is in square brackets)
+${founders.length ? `FOUNDERS\n${founders.map((f) => `${f.name} — ${f.role} (${f.creds}). ${f.bio[0] ?? ""}`).join("\n")}\n\n` : ""}SELECTED WORK (${projectsData.length} projects on the Projects page; the id is in square brackets)
 ${projectSummary(projectsData)}
 
 CONTACT

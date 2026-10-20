@@ -22,7 +22,6 @@ export interface Translations {
     pill2Label: string;
     pill2Val: string;
     pill3Label: string;
-    pill3Val: string;
   };
   projects: {
     heading: string;
@@ -115,7 +114,6 @@ export const translations: Record<Language, Translations> = {
       pill2Label: "LOCATION",
       pill2Val: "Qatar & India • Established 2025",
       pill3Label: "CO-FOUNDERS & PRINCIPAL ARCHITECTS",
-      pill3Val: "Ar. Mohamed Ramshad & Ar. Rajeena",
     },
     projects: {
       heading: "SELECTED WORKS",
@@ -206,7 +204,6 @@ export const translations: Record<Language, Translations> = {
       pill2Label: "ALCANCE GEOGRÁFICO",
       pill2Val: "Catar & India • Fundado en 2025",
       pill3Label: "FUNDADORES Y DIRECTORES",
-      pill3Val: "Ar. Mohamed Ramshad & Ar. Rajeena",
     },
     projects: {
       heading: "PROYECTOS SELECCIONADOS",
